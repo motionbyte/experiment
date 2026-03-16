@@ -1,0 +1,9 @@
+Put your logo OBJ here:
+
+- Copy: /Users/admin/Downloads/thelostsymbolslogo.obj
+- To:   public/assets/logo.obj
+
+Then refresh the page.
+
+If you prefer the old filename, `thelostsymbolslogo.obj` is also supported.
+

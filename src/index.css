@@ -1,0 +1,54 @@
+:root {
+  --bg: #0a0a12;
+  --surface: rgba(255, 255, 255, 0.06);
+  --border: rgba(255, 255, 255, 0.12);
+  --text: rgba(255, 255, 255, 0.78);
+  --text-h: rgba(255, 255, 255, 0.96);
+  --accent: #3ef3ff;
+  --accent-2: #ff3ed6;
+  --accent-bg: rgba(62, 243, 255, 0.12);
+  --social-bg: rgba(255, 255, 255, 0.04);
+  --shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+
+  font: 16px/155% system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Inter", sans-serif;
+  letter-spacing: 0.2px;
+  color-scheme: dark;
+  color: var(--text);
+  background: radial-gradient(circle at top, #11113b 0, #070716 55%, #000 100%);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #11113b 0, #070716 55%, #000 100%);
+  color: var(--text);
+}
+
+a {
+  color: inherit;
+}
+
+.app-shell {
+  min-height: 100svh;
+}
+
+.app-main {
+  padding-top: 70px;
+  padding-bottom: 40px;
+}
