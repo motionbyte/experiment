@@ -104,7 +104,14 @@
   width: 100%;
   max-width: 920px;
   min-width: 0;
-  transition: transform 0.2s ease, filter 0.2s ease;
+  --rx: 0deg;
+  --ry: 0deg;
+  --mx: 50%;
+  --my: 50%;
+  --tiltOn: 0;
+  transform-style: preserve-3d;
+  transition: transform 220ms ease, filter 220ms ease;
+  will-change: transform;
 }
 
 .memberRight .card {
@@ -112,8 +119,16 @@
 }
 
 .card:hover {
-  transform: scale(1.02);
+  transform:
+    perspective(900px)
+    rotateX(var(--rx))
+    rotateY(var(--ry))
+    scale(1.02);
   filter: drop-shadow(0 8px 24px rgba(62, 243, 255, 0.2));
+}
+
+.card:not(:hover) {
+  transform: scale(1);
 }
 
 .card:focus-visible {
@@ -128,6 +143,31 @@
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  transform-style: preserve-3d;
+  transform:
+    translateZ(20px)
+    rotateX(calc(var(--rx) * 0.35))
+    rotateY(calc(var(--ry) * 0.35));
+  transition: transform 220ms ease;
+  will-change: transform;
+}
+
+.photoWrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: calc(var(--tiltOn) * 0.55);
+  background:
+    radial-gradient(
+      420px 320px at var(--mx) var(--my),
+      rgba(62, 243, 255, 0.28),
+      rgba(255, 62, 214, 0.12) 35%,
+      rgba(0, 0, 0, 0) 70%
+    );
+  mix-blend-mode: screen;
+  transition: opacity 180ms ease;
 }
 
 .photo {
@@ -135,6 +175,7 @@
   width: 560px;
   height: 560px;
   object-fit: cover;
+  transform: translateZ(30px) scale(1.01);
 }
 
 .info {

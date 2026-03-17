@@ -24,6 +24,36 @@ export const BandMembersSection: React.FC = () => {
   const [pathLength, setPathLength] = useState(400);
   const [marker, setMarker] = useState({ x: 50, y: 0, angle: 90 });
 
+  const handleTiltMove = (e: React.PointerEvent<HTMLButtonElement>) => {
+    // Only apply on real pointers (mouse/pen). Skip touch scroll.
+    if (e.pointerType === "touch") return;
+    const el = e.currentTarget;
+    const r = el.getBoundingClientRect();
+    const px = (e.clientX - r.left) / Math.max(1, r.width);
+    const py = (e.clientY - r.top) / Math.max(1, r.height);
+    const clamp = (v: number) => Math.max(0, Math.min(1, v));
+    const cx = clamp(px);
+    const cy = clamp(py);
+
+    // Tilt strength
+    const maxDeg = 8;
+    const ry = (cx - 0.5) * (maxDeg * 2); // left/right
+    const rx = (0.5 - cy) * (maxDeg * 2); // up/down
+
+    el.style.setProperty("--rx", `${rx.toFixed(2)}deg`);
+    el.style.setProperty("--ry", `${ry.toFixed(2)}deg`);
+    el.style.setProperty("--mx", `${(cx * 100).toFixed(2)}%`);
+    el.style.setProperty("--my", `${(cy * 100).toFixed(2)}%`);
+    el.style.setProperty("--tiltOn", "1");
+  };
+
+  const handleTiltLeave = (e: React.PointerEvent<HTMLButtonElement>) => {
+    const el = e.currentTarget;
+    el.style.setProperty("--tiltOn", "0");
+    el.style.setProperty("--rx", `0deg`);
+    el.style.setProperty("--ry", `0deg`);
+  };
+
   useLayoutEffect(() => {
     const path = pathRef.current;
     if (path) setPathLength(path.getTotalLength());
@@ -159,6 +189,8 @@ export const BandMembersSection: React.FC = () => {
                   type="button"
                   className={styles.card}
                   onClick={() => setSelectedMember(member)}
+                  onPointerMove={handleTiltMove}
+                  onPointerLeave={handleTiltLeave}
                 >
                   <div className={styles.photoWrap}>
                     <img
