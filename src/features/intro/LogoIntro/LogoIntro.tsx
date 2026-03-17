@@ -225,26 +225,40 @@ export const LogoIntro: React.FC = () => {
     window.addEventListener("resize", onResize, { passive: true });
 
     // Pointer / touch interaction for rotating logo in-place.
-    // Simpler model: while pressed on logo area we adjust rotation based on horizontal movement,
-    // but never block native scrolling.
+    // Drag applies angular impulse; after release logo keeps spinning then eases back to default.
     let isPressed = false;
-    let startX = 0;
-    let baseRotY = 0;
-    const ROT_FACTOR = 0.008; // radians per pixel (horizontal only)
+    let lastX = 0;
+    let lastY = 0;
+    let velX = 0;
+    let velY = 0;
+    const ROT_Y_FACTOR = 0.008; // radians per pixel (horizontal)
+    const ROT_X_FACTOR = 0.006; // radians per pixel (vertical)
 
     const targetEl = renderer?.domElement ?? mount;
 
     const handlePointerDown = (e: PointerEvent) => {
       if (!logoRoot) return;
       isPressed = true;
-      startX = e.clientX;
-      baseRotY = logoRoot.rotation.y;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      velX = 0;
+      velY = 0;
     };
 
     const handlePointerMove = (e: PointerEvent) => {
       if (!isPressed || !logoRoot) return;
-      const dx = e.clientX - startX;
-      logoRoot.rotation.y = baseRotY + dx * ROT_FACTOR;
+      const dx = e.clientX - lastX;
+      const dy = e.clientY - lastY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+
+      const deltaY = dx * ROT_Y_FACTOR;
+      const deltaX = dy * ROT_X_FACTOR;
+      logoRoot.rotation.y += deltaY;
+      logoRoot.rotation.x += deltaX;
+
+      velY = deltaY;
+      velX = deltaX;
     };
 
     const handlePointerUp = () => {
@@ -263,12 +277,23 @@ export const LogoIntro: React.FC = () => {
       const t = (performance.now() / 1000) % 1000;
 
       if (logoRoot) {
-        // Auto spin only when not being dragged
+        // Auto / inertia behaviour when not dragging
         if (!isPressed) {
-          logoRoot.rotation.y += dt * 0.65;
-          // straighten back to center over time
-          logoRoot.rotation.x = lerp(logoRoot.rotation.x, 0, 0.08);
-          logoRoot.rotation.z = lerp(logoRoot.rotation.z, 0, 0.08);
+          // Free spin from last drag
+          logoRoot.rotation.y += velY;
+          logoRoot.rotation.x += velX;
+
+          // Dampen velocity (friction)
+          const damping = Math.pow(0.94, dt * 60);
+          velX *= damping;
+          velY *= damping;
+
+          // When almost stopped, go back to gentle default spin & upright pose
+          if (Math.abs(velX) < 0.0002 && Math.abs(velY) < 0.0002) {
+            logoRoot.rotation.y += dt * 0.65;
+            logoRoot.rotation.x = lerp(logoRoot.rotation.x, 0, 0.08);
+            logoRoot.rotation.z = lerp(logoRoot.rotation.z, 0, 0.08);
+          }
         }
 
         // tiny "star pulse"
