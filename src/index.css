@@ -42,6 +42,7 @@ body {
   margin: 0;
   background: radial-gradient(circle at top, #11113b 0, #070716 55%, #000 100%);
   color: var(--text);
+  overflow-x: hidden;
 }
 
 a {
