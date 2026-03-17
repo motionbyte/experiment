@@ -224,9 +224,46 @@ export const LogoIntro: React.FC = () => {
     onResize();
     window.addEventListener("resize", onResize, { passive: true });
 
-    // Keep logo perfectly straight in center (no pointer tilt)
-    const targetX = 0;
-    const targetY = 0;
+    // Pointer / touch interaction for rotating logo in-place
+    let isInteracting = false;
+    let startX = 0;
+    let startY = 0;
+    let baseRotX = 0;
+    let baseRotY = 0;
+
+    const handlePointerDown = (e: PointerEvent) => {
+      if (!logoRoot) return;
+      isInteracting = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      baseRotX = logoRoot.rotation.x;
+      baseRotY = logoRoot.rotation.y;
+      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    };
+
+    const handlePointerMove = (e: PointerEvent) => {
+      if (!isInteracting || !logoRoot) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      const factor = 0.008; // radians per pixel
+      logoRoot.rotation.y = baseRotY + dx * factor;
+      logoRoot.rotation.x = baseRotX + dy * factor;
+    };
+
+    const handlePointerUp = (e: PointerEvent) => {
+      isInteracting = false;
+      try {
+        (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+      } catch {
+        // ignore
+      }
+    };
+
+    mount.addEventListener("pointerdown", handlePointerDown);
+    mount.addEventListener("pointermove", handlePointerMove);
+    mount.addEventListener("pointerup", handlePointerUp);
+    mount.addEventListener("pointercancel", handlePointerUp);
+    mount.addEventListener("pointerleave", handlePointerUp);
 
     let raf = 0;
     const clock = new THREE.Clock();
@@ -235,15 +272,16 @@ export const LogoIntro: React.FC = () => {
       const t = (performance.now() / 1000) % 1000;
 
       if (logoRoot) {
-        // Revolve on axis (constant, clean)
-        logoRoot.rotation.y += dt * 0.65;
+        // Auto spin only when not being dragged
+        if (!isInteracting) {
+          logoRoot.rotation.y += dt * 0.65;
+          // straighten back to center over time
+          logoRoot.rotation.x = lerp(logoRoot.rotation.x, 0, 0.08);
+          logoRoot.rotation.z = lerp(logoRoot.rotation.z, 0, 0.08);
+        }
 
         // tiny "star pulse"
         (glowMat.uniforms.uIntensity.value as number) = 2.6 + Math.sin(t * 3.2) * 0.22;
-
-        // straighten to center
-        logoRoot.rotation.x = lerp(logoRoot.rotation.x, targetX, 0.08);
-        logoRoot.rotation.z = lerp(logoRoot.rotation.z, -targetY * 0.0, 0.08);
       }
 
       renderer.render(scene, camera);
@@ -254,7 +292,11 @@ export const LogoIntro: React.FC = () => {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", onResize);
-      // no pointer listener registered anymore
+      mount.removeEventListener("pointerdown", handlePointerDown);
+      mount.removeEventListener("pointermove", handlePointerMove);
+      mount.removeEventListener("pointerup", handlePointerUp);
+      mount.removeEventListener("pointercancel", handlePointerUp);
+      mount.removeEventListener("pointerleave", handlePointerUp);
       renderer?.dispose();
       if (renderer?.domElement && renderer.domElement.parentElement === mount) {
         mount.removeChild(renderer.domElement);
