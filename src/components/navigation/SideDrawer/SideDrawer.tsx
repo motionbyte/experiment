@@ -1,13 +1,16 @@
 import React from "react";
 import styles from "./SideDrawer.module.css";
 
-type DrawerLink = { label: string; href: string };
+type DrawerLink = { label: string; id: string };
 
 const links: DrawerLink[] = [
-  { label: "Discography", href: "#discography" },
-  { label: "About", href: "#about" },
-  { label: "Photos", href: "#photos" },
-  { label: "Contact", href: "#contact" },
+  { label: "Discography", id: "discography" },
+  { label: "Biography", id: "biography" },
+  { label: "Band Members", id: "band" },
+  { label: "Playlists", id: "playlist" },
+  { label: "Photos", id: "photos" },
+  { label: "Videos", id: "videos" },
+  { label: "Contact", id: "contact" },
 ];
 
 export const SideDrawer: React.FC = () => {
@@ -20,6 +23,15 @@ export const SideDrawer: React.FC = () => {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    setOpen(false);
+  };
 
   return (
     <>
@@ -56,10 +68,10 @@ export const SideDrawer: React.FC = () => {
         <nav className={styles.nav} aria-label="Drawer">
           {links.map((l) => (
             <a
-              key={l.href}
+              key={l.id}
               className={styles.link}
-              href={l.href}
-              onClick={() => setOpen(false)}
+              href={`#${l.id}`}
+              onClick={(e) => handleNavClick(e, l.id)}
             >
               {l.label}
             </a>

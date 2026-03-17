@@ -153,7 +153,7 @@ export const LogoIntro: React.FC = () => {
             box.getCenter(center);
 
             const maxDim = Math.max(size.x, size.y, size.z);
-            const scale = 62 / Math.max(1e-6, maxDim); // smaller so it fits cleanly
+            const scale = 200 / Math.max(1e-6, maxDim); // much bigger center logo
             obj.scale.setScalar(scale);
 
             // Center AFTER scaling (so pivot is accurate)
@@ -162,15 +162,15 @@ export const LogoIntro: React.FC = () => {
             boxScaled.getCenter(centerScaled);
             obj.position.sub(centerScaled);
 
-            // Camera fit (keeps it centered & visible)
+            // Camera closer so logo fills more of the view
             const scaledSize = new THREE.Vector3();
             boxScaled.getSize(scaledSize);
             const maxDimScaled = Math.max(scaledSize.x, scaledSize.y, scaledSize.z);
             const fov = (camera.fov * Math.PI) / 180;
             const fitHeight = (maxDimScaled * 0.5) / Math.tan(fov * 0.5);
             const fitWidth = fitHeight / camera.aspect;
-            const distance = 1.85 * Math.max(fitHeight, fitWidth);
-            camera.position.set(0, 0, distance + 220);
+            const distance = 1.25 * Math.max(fitHeight, fitWidth);
+            camera.position.set(0, 0, distance + 80);
             camera.lookAt(0, 0, 0);
 
             const glowGroup = obj.clone(true);
@@ -224,17 +224,9 @@ export const LogoIntro: React.FC = () => {
     onResize();
     window.addEventListener("resize", onResize, { passive: true });
 
-    // Pointer subtle tilt only (keeps it centered)
-    let targetX = 0;
-    let targetY = 0;
-    const onMove = (e: PointerEvent) => {
-      const rect = mount.getBoundingClientRect();
-      const nx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-      const ny = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
-      targetY = nx * 0.22;
-      targetX = -ny * 0.12;
-    };
-    window.addEventListener("pointermove", onMove, { passive: true });
+    // Keep logo perfectly straight in center (no pointer tilt)
+    const targetX = 0;
+    const targetY = 0;
 
     let raf = 0;
     const clock = new THREE.Clock();
@@ -249,9 +241,9 @@ export const LogoIntro: React.FC = () => {
         // tiny "star pulse"
         (glowMat.uniforms.uIntensity.value as number) = 2.6 + Math.sin(t * 3.2) * 0.22;
 
-        // smooth pointer tilt
-        logoRoot.rotation.x = lerp(logoRoot.rotation.x, targetX, 0.06);
-        logoRoot.rotation.z = lerp(logoRoot.rotation.z, -targetY * 0.25, 0.05);
+        // straighten to center
+        logoRoot.rotation.x = lerp(logoRoot.rotation.x, targetX, 0.08);
+        logoRoot.rotation.z = lerp(logoRoot.rotation.z, -targetY * 0.0, 0.08);
       }
 
       renderer.render(scene, camera);
@@ -262,7 +254,7 @@ export const LogoIntro: React.FC = () => {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", onResize);
-      window.removeEventListener("pointermove", onMove);
+      // no pointer listener registered anymore
       renderer?.dispose();
       if (renderer?.domElement && renderer.domElement.parentElement === mount) {
         mount.removeChild(renderer.domElement);

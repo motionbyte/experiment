@@ -1,0 +1,97 @@
+.section {
+  padding: 64px 32px 100px;
+  pointer-events: none;
+  position: relative;
+  width: 100%;
+  max-width: min(920px, 92vw);
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.section .heading,
+.section .content {
+  pointer-events: auto;
+}
+
+.heading {
+  font-family: inherit;
+  font-size: clamp(2.5rem, 10vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: var(--text-h);
+  margin: 0 0 16px;
+  text-transform: uppercase;
+  text-align: center;
+  text-shadow: 0 0 40px rgba(62, 243, 255, 0.25);
+  line-height: 1.1;
+}
+
+.heading::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 3px;
+  margin: 24px auto 0;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+.content {
+  font-family: inherit;
+  font-weight: 400;
+  font-size: clamp(1.35rem, 3.2vw, 1.6rem);
+  line-height: 1.85;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+
+.para {
+  margin: 0 0 1.35em;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 0 24px rgba(62, 243, 255, 0.08), 0 0 48px rgba(155, 91, 255, 0.06);
+}
+
+.para:last-child {
+  margin-bottom: 0;
+}
+
+.content strong {
+  font-family: inherit;
+  font-weight: 600;
+  color: var(--text-h);
+  letter-spacing: 0.01em;
+  text-shadow: 0 0 20px rgba(62, 243, 255, 0.18), 0 0 40px rgba(155, 91, 255, 0.1);
+}
+
+.albumList {
+  list-style: none;
+  margin: 0 0 1.5em;
+  padding: 0;
+  border-left: 3px solid var(--accent);
+  padding-left: 1.35em;
+}
+
+.albumList li {
+  margin-bottom: 0.5em;
+  font-size: clamp(1.4rem, 3.2vw, 1.65rem);
+  font-weight: 600;
+}
+
+.albumLink {
+  color: var(--text-h);
+  text-decoration: none;
+  text-shadow: 0 0 16px rgba(62, 243, 255, 0.12);
+  transition: color 0.2s, text-shadow 0.2s;
+}
+
+.albumLink:hover {
+  color: var(--accent);
+  text-shadow: 0 0 20px rgba(62, 243, 255, 0.35);
+}
+
+.albumList li:last-child {
+  margin-bottom: 0;
+}
+
+.albumList strong {
+  font-weight: 700;
+}

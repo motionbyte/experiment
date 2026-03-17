@@ -4,6 +4,12 @@
   display: grid;
   overflow: hidden;
   padding: 0;
+  pointer-events: none;
+}
+
+.stage .canvasWrap,
+.stage .status {
+  pointer-events: auto;
 }
 
 .backdrop {
@@ -37,30 +43,30 @@
 
 .orb {
   position: absolute;
-  width: min(980px, 115vw);
-  aspect-ratio: 1 / 1;
-  border-radius: 50%;
+  width: min(420px, 52vw);
+  aspect-ratio: 1 / 0.866;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   background:
-    radial-gradient(circle at 35% 35%, rgba(62, 243, 255, 0.18), rgba(62, 243, 255, 0) 46%),
-    radial-gradient(circle at 70% 75%, rgba(255, 62, 214, 0.16), rgba(255, 62, 214, 0) 52%),
-    radial-gradient(circle at 50% 50%, rgba(155, 91, 255, 0.14), rgba(0, 0, 0, 0) 62%),
-    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0) 58%);
-  filter: blur(24px);
+    linear-gradient(135deg, rgba(62, 243, 255, 0.2) 0%, rgba(62, 243, 255, 0) 50%),
+    linear-gradient(225deg, rgba(255, 62, 214, 0.18) 0%, rgba(255, 62, 214, 0) 50%),
+    linear-gradient(180deg, rgba(155, 91, 255, 0.12) 0%, transparent 70%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, transparent 60%);
+  filter: blur(20px);
   opacity: 0.92;
   pointer-events: none;
 }
 
 .starburst {
   position: absolute;
-  width: min(920px, 110vw);
-  aspect-ratio: 1 / 1;
-  border-radius: 50%;
+  width: min(380px, 48vw);
+  aspect-ratio: 1 / 0.866;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   background: conic-gradient(
     from 90deg,
     rgba(62, 243, 255, 0),
@@ -76,8 +82,8 @@
 
 .canvasWrap {
   position: relative;
-  width: min(320px, 52vw);
-  height: min(320px, 52vw);
+  width: min(680px, 90vw);
+  height: min(680px, 90vw);
   filter: drop-shadow(0 0 26px rgba(62, 243, 255, 0.75))
     drop-shadow(0 0 95px rgba(155, 91, 255, 0.55))
     drop-shadow(0 0 65px rgba(255, 62, 214, 0.28));
@@ -112,5 +118,10 @@
   to {
     transform: translate(-50%, -50%) rotate(360deg) scale(0.95);
   }
+}
+
+.orb,
+.starburst {
+  transform-origin: 50% 66.67%;
 }
 

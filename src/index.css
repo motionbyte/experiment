@@ -28,6 +28,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body,
 #root {
@@ -49,6 +53,9 @@ a {
 }
 
 .app-main {
-  padding-top: 70px;
+  position: relative;
+  z-index: 1;
   padding-bottom: 40px;
+  pointer-events: none;
+  background: transparent;
 }
