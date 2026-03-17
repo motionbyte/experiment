@@ -1,4 +1,3 @@
-import React from "react";
 import type { RouteObject } from "react-router-dom";
 import { AppShell } from "../shell/AppShell";
 import { HomePage } from "../../pages/HomePage/HomePage";

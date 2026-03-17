@@ -108,7 +108,7 @@ export const LogoIntro: React.FC = () => {
       depthWrite: false,
     });
 
-    let logoRoot: THREE.Object3D | null = null;
+    let logoRoot: any = null;
     const primaryUrl = "/assets/logo.obj";
     const fallbackUrl = "/assets/thelostsymbolslogo.obj";
 
@@ -131,18 +131,18 @@ export const LogoIntro: React.FC = () => {
         const loader = new OBJLoader();
         loader.load(
           url,
-          (obj) => {
-            obj.traverse((child) => {
-              const mesh = child as THREE.Mesh;
+          (obj: any) => {
+            obj.traverse((child: any) => {
+              const mesh = child as any;
               if ((mesh as any).isMesh) {
-                const geo = mesh.geometry as THREE.BufferGeometry;
-                const n = geo.getAttribute("normal");
+                const geo = (mesh as any).geometry;
+                const n = geo && geo.getAttribute ? geo.getAttribute("normal") : null;
                 if (!n || (n as any).count === 0) geo.computeVertexNormals();
               }
             });
 
-            obj.traverse((child) => {
-              const mesh = child as THREE.Mesh;
+            obj.traverse((child: any) => {
+              const mesh = child as any;
               if ((mesh as any).isMesh) mesh.material = baseMat;
             });
 

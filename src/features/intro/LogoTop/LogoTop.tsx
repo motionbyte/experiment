@@ -91,20 +91,20 @@ export const LogoTop: React.FC = () => {
       depthWrite: false,
     });
 
-    let logoRoot: THREE.Object3D | null = null;
+    let logoRoot: any = null;
     const url = "/assets/logo.obj";
     const loader = new OBJLoader();
 
     loader.load(
       url,
-      (obj) => {
-        obj.traverse((child) => {
-          const mesh = child as THREE.Mesh;
+      (obj: any) => {
+        obj.traverse((child: any) => {
+          const mesh = child as any;
           if ((mesh as any).isMesh) {
-            const geo = mesh.geometry as THREE.BufferGeometry;
-            const n = geo.getAttribute("normal");
+            const geo = (mesh as any).geometry;
+            const n = geo && geo.getAttribute ? geo.getAttribute("normal") : null;
             if (!n || (n as any).count === 0) geo.computeVertexNormals();
-            mesh.material = baseMat;
+            (mesh as any).material = baseMat;
           }
         });
 
@@ -121,11 +121,11 @@ export const LogoTop: React.FC = () => {
         obj.position.sub(center);
 
         const glowGroup = obj.clone(true);
-        glowGroup.traverse((child) => {
-          const mesh = child as THREE.Mesh;
+        glowGroup.traverse((child: any) => {
+          const mesh = child as any;
           if ((mesh as any).isMesh) {
-            mesh.material = glowMat;
-            mesh.scale.setScalar(1.035);
+            (mesh as any).material = glowMat;
+            (mesh as any).scale.setScalar(1.035);
           }
         });
         glowGroup.position.copy(obj.position);
