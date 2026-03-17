@@ -225,80 +225,36 @@ export const LogoIntro: React.FC = () => {
     window.addEventListener("resize", onResize, { passive: true });
 
     // Pointer / touch interaction for rotating logo in-place.
-    // Important: don't block vertical scroll. Only start interaction after a clear horizontal drag.
-    let isInteracting = false;
+    // Simpler model: while pressed on logo area we adjust rotation based on horizontal movement,
+    // but never block native scrolling.
     let isPressed = false;
-    let hasCaptured = false;
     let startX = 0;
-    let startY = 0;
-    let baseRotX = 0;
     let baseRotY = 0;
-    let pointerId: number | null = null;
-
-    const DRAG_THRESHOLD_PX = 12;
-    const ROT_FACTOR = 0.008; // radians per pixel
+    const ROT_FACTOR = 0.008; // radians per pixel (horizontal only)
 
     const targetEl = renderer?.domElement ?? mount;
 
     const handlePointerDown = (e: PointerEvent) => {
       if (!logoRoot) return;
       isPressed = true;
-      isInteracting = false;
-      hasCaptured = false;
-      pointerId = e.pointerId;
       startX = e.clientX;
-      startY = e.clientY;
-      baseRotX = logoRoot.rotation.x;
       baseRotY = logoRoot.rotation.y;
     };
 
     const handlePointerMove = (e: PointerEvent) => {
       if (!isPressed || !logoRoot) return;
       const dx = e.clientX - startX;
-      const dy = e.clientY - startY;
-
-      // Start interaction only when horizontal intent is clear.
-      if (!isInteracting) {
-        if (Math.abs(dx) < DRAG_THRESHOLD_PX) return;
-        if (Math.abs(dx) <= Math.abs(dy)) return; // vertical swipe → allow scroll
-        isInteracting = true;
-        if (!hasCaptured && pointerId != null && "setPointerCapture" in targetEl) {
-          try {
-            (targetEl as HTMLElement).setPointerCapture(pointerId);
-            hasCaptured = true;
-          } catch {
-            // ignore
-          }
-        }
-      }
-
-      // When interacting, prevent page scroll/jank.
-      e.preventDefault?.();
       logoRoot.rotation.y = baseRotY + dx * ROT_FACTOR;
-      logoRoot.rotation.x = baseRotX + dy * ROT_FACTOR;
     };
 
-    const endInteraction = () => {
+    const handlePointerUp = () => {
       isPressed = false;
-      isInteracting = false;
-      if (hasCaptured && pointerId != null && "releasePointerCapture" in targetEl) {
-        try {
-          (targetEl as HTMLElement).releasePointerCapture(pointerId);
-        } catch {
-          // ignore
-        }
-      }
-      hasCaptured = false;
-      pointerId = null;
     };
-
-    const handlePointerUp = () => endInteraction();
-    const handlePointerCancel = () => endInteraction();
 
     targetEl.addEventListener("pointerdown", handlePointerDown, { passive: true });
-    targetEl.addEventListener("pointermove", handlePointerMove, { passive: false });
+    targetEl.addEventListener("pointermove", handlePointerMove, { passive: true });
     targetEl.addEventListener("pointerup", handlePointerUp, { passive: true });
-    targetEl.addEventListener("pointercancel", handlePointerCancel, { passive: true });
+    targetEl.addEventListener("pointercancel", handlePointerUp, { passive: true });
 
     let raf = 0;
     const clock = new THREE.Clock();
@@ -308,7 +264,7 @@ export const LogoIntro: React.FC = () => {
 
       if (logoRoot) {
         // Auto spin only when not being dragged
-        if (!isInteracting) {
+        if (!isPressed) {
           logoRoot.rotation.y += dt * 0.65;
           // straighten back to center over time
           logoRoot.rotation.x = lerp(logoRoot.rotation.x, 0, 0.08);
@@ -330,7 +286,7 @@ export const LogoIntro: React.FC = () => {
       targetEl.removeEventListener("pointerdown", handlePointerDown as any);
       targetEl.removeEventListener("pointermove", handlePointerMove as any);
       targetEl.removeEventListener("pointerup", handlePointerUp as any);
-      targetEl.removeEventListener("pointercancel", handlePointerCancel as any);
+      targetEl.removeEventListener("pointercancel", handlePointerUp as any);
       renderer?.dispose();
       if (renderer?.domElement && renderer.domElement.parentElement === mount) {
         mount.removeChild(renderer.domElement);

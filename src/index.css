@@ -30,13 +30,7 @@
 
 html {
   scroll-behavior: smooth;
-  height: 100%;
   overflow-x: hidden;
-}
-
-body,
-#root {
-  height: 100%;
 }
 
 body {
@@ -44,6 +38,10 @@ body {
   background: radial-gradient(circle at top, #11113b 0, #070716 55%, #000 100%);
   color: var(--text);
   overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
 }
 
 a {

@@ -1369,7 +1369,6 @@ function onMouseDown (e) {
 }
 function onMouseMove (e) {
     let pointer = pointers[0];
-    if (!pointer.down) return;
     let posX = scaleByPixelRatio(e.offsetX);
     let posY = scaleByPixelRatio(e.offsetY);
     updatePointerMoveData(pointer, posX, posY);
@@ -1378,7 +1377,6 @@ function onMouseUp () {
     updatePointerUpData(pointers[0]);
 }
 function onTouchStart (e) {
-    e.preventDefault();
     const touches = e.targetTouches;
     while (touches.length >= pointers.length)
         pointers.push(new pointerPrototype());
@@ -1389,7 +1387,6 @@ function onTouchStart (e) {
     }
 }
 function onTouchMove (e) {
-    e.preventDefault();
     const touches = e.targetTouches;
     for (let i = 0; i < touches.length; i++) {
         let pointer = pointers[i + 1];

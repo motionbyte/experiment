@@ -16,7 +16,7 @@ declare global {
 
 /**
  * Full-viewport fixed WebGL fluid simulation background.
- * Uses PavelDoGreat/WebGL-Fluid-Simulation with no GUI; control via window.__FLUID_API__ if needed.
+ * Uses PavelDoGreat/WebGL-Fluid-Simulation with no GUI.
  */
 export const FluidBackground: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -69,3 +69,4 @@ export const FluidBackground: React.FC = () => {
     </div>
   );
 };
+
