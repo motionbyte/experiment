@@ -22,7 +22,7 @@ export const LogoIntro: React.FC = () => {
 
     setStatus({ kind: "loading" });
 
-    let renderer: THREE.WebGLRenderer | null = null;
+    let renderer: any = null;
     try {
       renderer = new THREE.WebGLRenderer({
         antialias: true,
@@ -174,11 +174,11 @@ export const LogoIntro: React.FC = () => {
             camera.lookAt(0, 0, 0);
 
             const glowGroup = obj.clone(true);
-            glowGroup.traverse((child) => {
-              const mesh = child as THREE.Mesh;
+            glowGroup.traverse((child: any) => {
+              const mesh = child as any;
               if ((mesh as any).isMesh) {
-                mesh.material = glowMat;
-                mesh.scale.setScalar(1.035);
+                (mesh as any).material = glowMat;
+                (mesh as any).scale.setScalar(1.035);
               }
             });
             glowGroup.position.copy(obj.position);

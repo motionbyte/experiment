@@ -13,7 +13,7 @@ export const LogoTop: React.FC = () => {
     const mount = mountRef.current;
     if (!mount) return;
 
-    let renderer: THREE.WebGLRenderer | null = null;
+    let renderer: any = null;
     try {
       renderer = new THREE.WebGLRenderer({
         antialias: true,
