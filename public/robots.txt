@@ -1,0 +1,5 @@
+# Sitemap: https://thelostsymbols.in (must match Search Console property: https, domain).
+User-agent: *
+Allow: /
+
+Sitemap: https://thelostsymbols.in/sitemap.xml

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styles from "./SideDrawer.module.css";
 
 type DrawerLink = { label: string; id: string };
@@ -23,15 +24,6 @@ export const SideDrawer: React.FC = () => {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
-
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    e.preventDefault();
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-    setOpen(false);
-  };
 
   return (
     <>
@@ -67,14 +59,14 @@ export const SideDrawer: React.FC = () => {
         </div>
         <nav className={styles.nav} aria-label="Drawer">
           {links.map((l) => (
-            <a
+            <Link
               key={l.id}
               className={styles.link}
-              href={`#${l.id}`}
-              onClick={(e) => handleNavClick(e, l.id)}
+              to={`/${l.id}`}
+              onClick={() => setOpen(false)}
             >
               {l.label}
-            </a>
+            </Link>
           ))}
         </nav>
       </aside>

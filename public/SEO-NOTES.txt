@@ -1,0 +1,21 @@
+Google indexing — quick checklist
+==================================
+
+1) Domain in sitemap / robots
+   Canonical site: https://thelostsymbols.in — keep sitemap/robots in sync with
+   Google Search Console (same protocol: https; use www only if that is your property).
+
+2) "Page with redirect" in Search Console
+   Usually: http→https, www→non-www, or trailing-slash redirects.
+   Fix: use ONE canonical URL everywhere (sitemap, internal links, GSC property).
+   Avoid listing redirecting URLs in the sitemap — only list the final 200 OK URL.
+
+3) Submit sitemap
+   In Search Console: Sitemaps → https://YOURDOMAIN/sitemap.xml
+
+4) 100% indexing
+   Google never guarantees every URL will be indexed. A valid sitemap + clean redirects
+   + good content helps. Album pages exist at /album/<id> for crawlers.
+
+5) After adding albums
+   Add a new <url> block in public/sitemap.xml for each new album id, or regenerate.

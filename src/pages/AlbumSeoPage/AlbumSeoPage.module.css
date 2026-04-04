@@ -1,0 +1,93 @@
+.wrap {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: clamp(1.25rem, 4vw, 2rem);
+  padding-bottom: calc(3rem + env(safe-area-inset-bottom, 0px));
+  pointer-events: auto;
+  color: var(--text);
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.5rem;
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-m, rgba(255, 255, 255, 0.62));
+}
+
+.crumb {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.crumb:hover {
+  text-decoration: underline;
+}
+
+.sep {
+  opacity: 0.5;
+  user-select: none;
+}
+
+.current {
+  color: var(--text-h);
+  font-weight: 600;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.title {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.75rem, 5vw, 2.25rem);
+  font-weight: 800;
+  color: var(--text-h);
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.meta {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--text);
+  opacity: 0.95;
+}
+
+.tracksHeading {
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-h);
+}
+
+.trackList {
+  margin: 0;
+  padding-left: 1.25rem;
+  line-height: 1.65;
+}
+
+.trackItem {
+  margin-bottom: 0.35rem;
+  padding-left: 0.25rem;
+}
+
+.trackNum {
+  opacity: 0.75;
+  margin-right: 0.35rem;
+}
+
+.hint {
+  margin: 2rem 0 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-m, rgba(255, 255, 255, 0.62));
+}
+
+.inlineLink {
+  color: var(--accent);
+}

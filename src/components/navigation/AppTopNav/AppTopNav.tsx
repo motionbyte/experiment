@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import styles from "./AppTopNav.module.css";
 
 export const AppTopNav: React.FC = () => {
@@ -10,18 +10,18 @@ export const AppTopNav: React.FC = () => {
           FluidWhite
         </NavLink>
         <nav className={styles.nav} aria-label="Primary">
-          <a className={styles.link} href="#discography">
+          <Link className={styles.link} to="/discography">
             Discography
-          </a>
-          <a className={styles.link} href="#about">
+          </Link>
+          <Link className={styles.link} to="/biography">
             About
-          </a>
-          <a className={styles.link} href="#photos">
+          </Link>
+          <Link className={styles.link} to="/photos">
             Photos
-          </a>
-          <a className={styles.link} href="#contact">
+          </Link>
+          <Link className={styles.link} to="/contact">
             Contact
-          </a>
+          </Link>
         </nav>
       </div>
     </header>

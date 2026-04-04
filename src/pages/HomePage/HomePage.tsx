@@ -42,7 +42,29 @@ function SectionFallback() {
   return <div className={styles.sectionFallback} aria-hidden />;
 }
 
-export const HomePage: React.FC = () => {
+export type HomePageProps = {
+  /** When set (e.g. /discography route), scroll to this section id after lazy chunks load */
+  scrollTarget?: string;
+};
+
+export const HomePage: React.FC<HomePageProps> = ({ scrollTarget }) => {
+  React.useEffect(() => {
+    if (!scrollTarget) return;
+    let tries = 0;
+    const maxTries = 120;
+    const id = window.setInterval(() => {
+      const el = document.getElementById(scrollTarget);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        window.clearInterval(id);
+        return;
+      }
+      tries += 1;
+      if (tries >= maxTries) window.clearInterval(id);
+    }, 100);
+    return () => window.clearInterval(id);
+  }, [scrollTarget]);
+
   return (
     <div className={styles.page}>
       <LogoIntro />
