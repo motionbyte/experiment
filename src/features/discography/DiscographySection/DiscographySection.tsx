@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { albums } from "../discographyData";
 import { AlbumModal } from "../AlbumModal/AlbumModal";
-import { VinylSpinner } from "../VinylSpinner/VinylSpinner";
+import { AlbumArtworkStack } from "../AlbumArtworkStack/AlbumArtworkStack";
 import type { Album } from "../discographyData";
 import styles from "./DiscographySection.module.css";
 
@@ -96,7 +96,6 @@ export const DiscographySection: React.FC = () => {
       >
         <div className={styles.titleRow}>
           <h2 className={styles.heading}>DISCOGRAPHY</h2>
-          <VinylSpinner size={52} className={styles.vinyl} />
         </div>
 
         <div className={styles.timeline}>
@@ -165,11 +164,14 @@ export const DiscographySection: React.FC = () => {
                 <button
                   type="button"
                   className={styles.albumCard}
+                  data-album-hover=""
                   onClick={() => setSelectedAlbum(album)}
                 >
-                  <div className={styles.artworkWrap}>
-                    <img src={encodeURI(album.coverUrl)} alt="" className={styles.cover} />
-                  </div>
+                  <AlbumArtworkStack
+                    coverUrl={album.coverUrl}
+                    peek={index % 2 === 0 ? "right" : "left"}
+                    paletteIndex={index}
+                  />
                   <div className={styles.info}>
                     <span className={styles.albumTitle}>{album.title}</span>
                     <span className={styles.albumYear}>Year: {album.year}</span>

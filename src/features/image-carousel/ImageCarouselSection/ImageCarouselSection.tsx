@@ -160,6 +160,7 @@ export const ImageCarouselSection: React.FC = () => {
                     alt={`Slide ${i + 1}`}
                     draggable={false}
                     loading="lazy"
+                    decoding="async"
                   />
                 </div>
               </div>
@@ -185,7 +186,13 @@ export const ImageCarouselSection: React.FC = () => {
             >
               ×
             </button>
-            <img src={encodeURI(openedImage)} alt="Full size" className={styles.lightboxImg} />
+            <img
+              src={encodeURI(openedImage)}
+              alt="Full size"
+              className={styles.lightboxImg}
+              decoding="async"
+              fetchPriority="high"
+            />
           </div>
         </div>
       )}

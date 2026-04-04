@@ -197,6 +197,8 @@ export const BandMembersSection: React.FC = () => {
                       src={encodeURI(member.photoUrl)}
                       alt=""
                       className={styles.photo}
+                      loading="lazy"
+                      decoding="async"
                     />
                   </div>
                   <div className={styles.info}>

@@ -1,5 +1,6 @@
 import React from "react";
 import * as THREE from "three";
+import { runFrameLoop } from "../../../utils/visibilityFrame";
 // @ts-expect-error three/examples has no TS types in-core
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 import styles from "./LogoTop.module.css";
@@ -8,6 +9,7 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 export const LogoTop: React.FC = () => {
   const mountRef = React.useRef<HTMLDivElement | null>(null);
+  const hostRef = React.useRef<HTMLDivElement | null>(null);
 
   React.useEffect(() => {
     const mount = mountRef.current;
@@ -155,9 +157,8 @@ export const LogoTop: React.FC = () => {
     onResize();
     window.addEventListener("resize", onResize, { passive: true });
 
-    let raf = 0;
     const clock = new THREE.Clock();
-    const tick = () => {
+    const stopLoop = runFrameLoop(() => {
       const dt = clock.getDelta();
       const t = (performance.now() / 1000) % 1000;
       if (logoRoot) {
@@ -168,12 +169,10 @@ export const LogoTop: React.FC = () => {
         logoRoot.rotation.z = lerp(logoRoot.rotation.z, 0, 0.08);
       }
       renderer?.render(scene, camera);
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
+    }, { intersectTarget: hostRef.current ?? undefined });
 
     return () => {
-      cancelAnimationFrame(raf);
+      stopLoop();
       window.removeEventListener("resize", onResize);
       renderer?.dispose();
       if (renderer?.domElement && renderer.domElement.parentElement === mount) {
@@ -183,7 +182,7 @@ export const LogoTop: React.FC = () => {
   }, []);
 
   return (
-    <div className={styles.host} aria-label="Logo">
+    <div ref={hostRef} className={styles.host} aria-label="Logo">
       <div className={styles.star} aria-hidden="true" />
       <div ref={mountRef} className={styles.mount} />
     </div>

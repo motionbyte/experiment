@@ -1,5 +1,6 @@
 import React from "react";
 import * as THREE from "three";
+import { runFrameLoop } from "../../../utils/visibilityFrame";
 // @ts-expect-error three/examples has no TS types in-core
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 import styles from "./LogoIntro.module.css";
@@ -14,6 +15,7 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 export const LogoIntro: React.FC = () => {
   const mountRef = React.useRef<HTMLDivElement | null>(null);
+  const stageRef = React.useRef<HTMLElement | null>(null);
   const [status, setStatus] = React.useState<Status>({ kind: "loading" });
 
   React.useEffect(() => {
@@ -221,8 +223,13 @@ export const LogoIntro: React.FC = () => {
       camera.aspect = w / Math.max(1, h);
       camera.updateProjectionMatrix();
     };
+    let resizeRaf = 0;
+    const scheduleResize = () => {
+      cancelAnimationFrame(resizeRaf);
+      resizeRaf = requestAnimationFrame(() => onResize());
+    };
     onResize();
-    window.addEventListener("resize", onResize, { passive: true });
+    window.addEventListener("resize", scheduleResize, { passive: true });
 
     // Pointer / touch interaction for rotating logo in-place.
     // Drag applies angular impulse; after release logo keeps spinning then eases back to default.
@@ -270,25 +277,20 @@ export const LogoIntro: React.FC = () => {
     targetEl.addEventListener("pointerup", handlePointerUp, { passive: true });
     targetEl.addEventListener("pointercancel", handlePointerUp, { passive: true });
 
-    let raf = 0;
     const clock = new THREE.Clock();
-    const tick = () => {
+    const stopLoop = runFrameLoop(() => {
       const dt = clock.getDelta();
       const t = (performance.now() / 1000) % 1000;
 
       if (logoRoot) {
-        // Auto / inertia behaviour when not dragging
         if (!isPressed) {
-          // Free spin from last drag
           logoRoot.rotation.y += velY;
           logoRoot.rotation.x += velX;
 
-          // Dampen velocity (friction)
           const damping = Math.pow(0.94, dt * 60);
           velX *= damping;
           velY *= damping;
 
-          // When almost stopped, go back to gentle default spin & upright pose
           if (Math.abs(velX) < 0.0002 && Math.abs(velY) < 0.0002) {
             logoRoot.rotation.y += dt * 0.65;
             logoRoot.rotation.x = lerp(logoRoot.rotation.x, 0, 0.08);
@@ -296,18 +298,16 @@ export const LogoIntro: React.FC = () => {
           }
         }
 
-        // tiny "star pulse"
         (glowMat.uniforms.uIntensity.value as number) = 2.6 + Math.sin(t * 3.2) * 0.22;
       }
 
       renderer.render(scene, camera);
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
+    }, { intersectTarget: stageRef.current ?? undefined });
 
     return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("resize", onResize);
+      stopLoop();
+      cancelAnimationFrame(resizeRaf);
+      window.removeEventListener("resize", scheduleResize);
       targetEl.removeEventListener("pointerdown", handlePointerDown as any);
       targetEl.removeEventListener("pointermove", handlePointerMove as any);
       targetEl.removeEventListener("pointerup", handlePointerUp as any);
@@ -320,7 +320,7 @@ export const LogoIntro: React.FC = () => {
   }, []);
 
   return (
-    <section className={styles.stage} aria-label="Intro logo">
+    <section ref={stageRef} className={styles.stage} aria-label="Intro logo">
       <div className={styles.backdrop} aria-hidden="true" />
       <div className={styles.centerStack}>
         <div className={styles.orb} aria-hidden="true" />

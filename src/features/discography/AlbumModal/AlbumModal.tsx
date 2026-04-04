@@ -45,7 +45,13 @@ export const AlbumModal: React.FC<Props> = ({ album, onClose }) => {
           ×
         </button>
         <div className={styles.header}>
-          <img src={encodeURI(album.coverUrl)} alt="" className={styles.cover} />
+          <img
+            src={encodeURI(album.coverUrl)}
+            alt=""
+            className={styles.cover}
+            decoding="async"
+            fetchPriority="high"
+          />
           <div className={styles.meta}>
             <h2 className={styles.title}>{album.title}</h2>
             <p className={styles.year}>Year: {album.year}</p>

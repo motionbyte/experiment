@@ -1,5 +1,6 @@
 .section {
-  padding: 48px 0 64px;
+  padding: 48px max(0px, env(safe-area-inset-left, 0px)) 64px
+    max(0px, env(safe-area-inset-right, 0px));
   pointer-events: none;
   overflow: hidden;
   position: relative;

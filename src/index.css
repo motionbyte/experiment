@@ -4,11 +4,17 @@
   --border: rgba(255, 255, 255, 0.12);
   --text: rgba(255, 255, 255, 0.78);
   --text-h: rgba(255, 255, 255, 0.96);
+  /* Muted secondary text (taglines) */
+  --text-m: rgba(255, 255, 255, 0.62);
   --accent: #3ef3ff;
   --accent-2: #ff3ed6;
   --accent-bg: rgba(62, 243, 255, 0.12);
   --social-bg: rgba(255, 255, 255, 0.04);
   --shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+
+  /* Shared section spacing — use with max(..., env(safe-area-inset-*)) on sides */
+  --section-pad-inline: clamp(1rem, 4.2vw, 2rem);
+  --section-pad-block: clamp(2.5rem, 5vw, 3.5rem);
 
   font: 16px/155% system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
     "Inter", sans-serif;
@@ -50,12 +56,60 @@ a {
 
 .app-shell {
   min-height: 100svh;
+  position: relative;
+}
+
+/* Fixed glow + dim: viewport-wide so scroll pe bhi fluid ke saath same atmosphere (hero clip nahi) */
+.app-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.22)),
+    radial-gradient(ellipse 130% 90% at 50% 36%, rgba(255, 255, 255, 0.055), transparent 56%),
+    radial-gradient(ellipse 95% 60% at 50% 108%, rgba(155, 91, 255, 0.09), transparent 52%),
+    radial-gradient(ellipse 70% 50% at 18% 52%, rgba(62, 243, 255, 0.06), transparent 45%),
+    radial-gradient(ellipse 55% 40% at 82% 58%, rgba(255, 62, 214, 0.05), transparent 42%);
 }
 
 .app-main {
   position: relative;
-  z-index: 1;
-  padding-bottom: 40px;
+  z-index: 2;
+  padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px));
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
   pointer-events: none;
   background: transparent;
+}
+
+/* Global name so CSS modules / bundlers keyframes mismatch se spin break na ho */
+@keyframes tls-vinyl-disc-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Discography vinyl spin — yahan rakha hai taaki CSS modules animation name hash na kare */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  [data-album-hover]:hover [data-vinyl-disc],
+  [data-album-hover]:focus-visible [data-vinyl-disc] {
+    animation: tls-vinyl-disc-spin 5.5s linear infinite;
+  }
+}
+
+@media (hover: none) and (prefers-reduced-motion: no-preference) {
+  [data-vinyl-disc] {
+    animation: tls-vinyl-disc-spin 5.5s linear infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-vinyl-disc] {
+    animation: none !important;
+  }
 }

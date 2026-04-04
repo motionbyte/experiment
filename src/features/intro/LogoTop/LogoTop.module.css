@@ -1,6 +1,6 @@
 .host {
   position: fixed;
-  top: 8px;
+  top: calc(8px + env(safe-area-inset-top, 0px));
   left: 50%;
   transform: translateX(-50%);
   z-index: 48;

@@ -1,5 +1,8 @@
 .section {
-  padding: 40px 24px 64px;
+  padding-top: clamp(2rem, 4vw, 3rem);
+  padding-bottom: calc(4rem + env(safe-area-inset-bottom, 0px));
+  padding-left: max(var(--section-pad-inline), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--section-pad-inline), env(safe-area-inset-right, 0px));
   text-align: center;
   pointer-events: none;
 }
@@ -19,8 +22,11 @@
 }
 
 .tagline {
-  margin: 0 0 28px;
-  font-size: 1rem;
+  margin: 0 auto 28px;
+  max-width: 36rem;
+  padding: 0 0.5rem;
+  font-size: clamp(0.9rem, 2.8vw, 1rem);
+  line-height: 1.45;
   color: var(--text-m);
   letter-spacing: 0.1em;
 }
@@ -36,8 +42,10 @@
 .link {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
-  padding: 14px 24px;
+  padding: 14px 22px;
+  min-height: 48px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 12px;

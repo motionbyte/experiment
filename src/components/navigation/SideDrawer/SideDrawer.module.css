@@ -1,7 +1,7 @@
 .trigger {
   position: fixed;
-  top: 14px;
-  left: 14px;
+  top: calc(14px + env(safe-area-inset-top, 0px));
+  left: calc(14px + env(safe-area-inset-left, 0px));
   z-index: 50;
   width: 44px;
   height: 44px;
@@ -61,7 +61,8 @@
   border-right: 1px solid var(--border);
   transform: translateX(-102%);
   transition: transform 220ms ease-out;
-  padding: 16px;
+  padding: calc(16px + env(safe-area-inset-top, 0px)) 16px 16px
+    max(16px, env(safe-area-inset-left, 0px));
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -105,7 +106,8 @@
 .link {
   text-decoration: none;
   color: var(--text);
-  padding: 12px 12px;
+  padding: 14px 14px;
+  min-height: 44px;
   border-radius: 14px;
   border: 1px solid transparent;
   background: rgba(255, 255, 255, 0.04);

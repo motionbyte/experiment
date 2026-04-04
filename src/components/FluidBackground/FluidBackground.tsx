@@ -8,15 +8,14 @@ declare global {
     __FLUID_CANVAS__?: HTMLCanvasElement | null;
     __FLUID_API__?: {
       destroy: () => void;
-      config: Record<string, unknown>;
+      config: Record<string, unknown> & { PAUSED?: boolean };
       addSplat: (n?: number) => void;
     };
   }
 }
 
 /**
- * Full-viewport fixed WebGL fluid simulation background.
- * Uses PavelDoGreat/WebGL-Fluid-Simulation with no GUI.
+ * Full-viewport WebGL fluid. Pauses simulation when tab is hidden (no quality loss when visible).
  */
 export const FluidBackground: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -26,12 +25,35 @@ export const FluidBackground: React.FC = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    window.__FLUID_CANVAS__ = canvas;
-
     const prevBodyBg = document.body.style.background;
     document.body.style.background = "transparent";
 
+    let rafId: number | null = null;
+
+    const syncFluidPause = () => {
+      const cfg = window.__FLUID_API__?.config;
+      if (!cfg) return;
+      const hidden =
+        document.visibilityState !== "visible" ||
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      cfg.PAUSED = hidden;
+    };
+
+    const onVisibility = () => syncFluidPause();
+    const onReducedMotion = () => syncFluidPause();
+    document.addEventListener("visibilitychange", onVisibility, { passive: true });
+    window
+      .matchMedia("(prefers-reduced-motion: reduce)")
+      .addEventListener("change", onReducedMotion);
+
     const loadFluid = () => {
+      if (!canvasRef.current) return;
+      const c = canvasRef.current;
+      if (c.clientWidth === 0 || c.clientHeight === 0) {
+        rafId = requestAnimationFrame(loadFluid);
+        return;
+      }
+      window.__FLUID_CANVAS__ = c;
       const scriptEl = document.createElement("script");
       scriptEl.src = FLUID_SCRIPT_URL;
       scriptEl.async = false;
@@ -42,23 +64,28 @@ export const FluidBackground: React.FC = () => {
         window.__FLUID_CANVAS__ = undefined;
       };
 
+      scriptEl.onload = () => {
+        syncFluidPause();
+      };
+
       document.body.appendChild(scriptEl);
+      syncFluidPause();
     };
 
-    const rafId = requestAnimationFrame(loadFluid);
+    rafId = requestAnimationFrame(loadFluid);
 
     return () => {
-      cancelAnimationFrame(rafId);
+      document.removeEventListener("visibilitychange", onVisibility);
+      window
+        .matchMedia("(prefers-reduced-motion: reduce)")
+        .removeEventListener("change", onReducedMotion);
+      if (rafId != null) cancelAnimationFrame(rafId);
       document.body.style.background = prevBodyBg;
-      if (window.__FLUID_API__?.destroy) {
-        window.__FLUID_API__.destroy();
-      }
+      if (window.__FLUID_API__?.destroy) window.__FLUID_API__.destroy();
       window.__FLUID_API__ = undefined;
       window.__FLUID_CANVAS__ = undefined;
       const scriptEl = scriptRef.current;
-      if (scriptEl?.parentNode) {
-        scriptEl.parentNode.removeChild(scriptEl);
-      }
+      if (scriptEl?.parentNode) scriptEl.parentNode.removeChild(scriptEl);
       scriptRef.current = null;
     };
   }, []);
@@ -69,4 +96,3 @@ export const FluidBackground: React.FC = () => {
     </div>
   );
 };
-

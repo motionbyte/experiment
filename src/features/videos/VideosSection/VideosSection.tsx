@@ -195,6 +195,8 @@ export const VideosSection: React.FC = () => {
                     src={YOUTUBE_THUMB(video.id)}
                     alt=""
                     className={styles.cover}
+                    loading="lazy"
+                    decoding="async"
                   />
                   <span className={styles.playIcon} aria-hidden>▶</span>
                 </div>

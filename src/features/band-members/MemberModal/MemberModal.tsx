@@ -31,6 +31,8 @@ export const MemberModal: React.FC<Props> = ({ member, onClose }) => {
             src={encodeURI(member.photoUrl)}
             alt=""
             className={styles.mainPhoto}
+            decoding="async"
+            fetchPriority="high"
           />
           <div className={styles.meta}>
             <h2 className={styles.name}>{member.name}</h2>
@@ -52,6 +54,8 @@ export const MemberModal: React.FC<Props> = ({ member, onClose }) => {
                   src={encodeURI(url)}
                   alt=""
                   className={styles.galleryImg}
+                  loading="lazy"
+                  decoding="async"
                 />
               ))}
             </div>

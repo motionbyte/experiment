@@ -1,5 +1,8 @@
 .section {
-  padding: 56px 24px 100px;
+  padding-top: clamp(2.5rem, 5vw, 3.5rem);
+  padding-bottom: 100px;
+  padding-left: max(var(--section-pad-inline), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--section-pad-inline), env(safe-area-inset-right, 0px));
   pointer-events: none;
   position: relative;
   overflow: visible;
@@ -212,19 +215,21 @@
   max-width: 100%;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 900px) {
   .pathSvg {
-    left: 24px;
-    width: calc(100% - 48px);
+    left: max(24px, env(safe-area-inset-left, 0px));
+    width: calc(
+      100% - 48px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)
+    );
   }
 
   .memberLeft,
   .memberRight {
     flex-direction: row;
-    padding-left: 52px;
+    padding-left: calc(52px + env(safe-area-inset-left, 0px));
     padding-right: 0;
     justify-content: flex-start;
-    min-height: 320px;
+    min-height: min(320px, 70svh);
   }
 
   .memberRight .card {
@@ -237,8 +242,8 @@
   }
 
   .photo {
-    width: 280px;
-    height: 280px;
+    width: min(280px, 78vw);
+    height: min(280px, 78vw);
   }
 
   .name {

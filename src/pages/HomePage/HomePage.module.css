@@ -1,3 +1,12 @@
 .page {
   min-height: 100svh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+/* Lazy section placeholder — avoids layout jump, nearly invisible */
+.sectionFallback {
+  min-height: 12rem;
 }
