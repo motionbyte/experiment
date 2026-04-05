@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from "react";
 import styles from "./HomePage.module.css";
 import { LogoIntro } from "../../features/intro/LogoIntro/LogoIntro";
+import { setHomeSeo, setSectionSeo } from "../../seo/homeAndSectionSeo";
 
 const DiscographySection = lazy(() =>
   import("../../features/discography/DiscographySection/DiscographySection").then((m) => ({
@@ -37,6 +38,11 @@ const ConnectWithUsSection = lazy(() =>
     default: m.ConnectWithUsSection,
   }))
 );
+const SisterVenturesSection = lazy(() =>
+  import("../../features/sister-ventures/SisterVenturesSection").then((m) => ({
+    default: m.SisterVenturesSection,
+  }))
+);
 
 function SectionFallback() {
   return <div className={styles.sectionFallback} aria-hidden />;
@@ -48,6 +54,11 @@ export type HomePageProps = {
 };
 
 export const HomePage: React.FC<HomePageProps> = ({ scrollTarget }) => {
+  React.useEffect(() => {
+    if (scrollTarget) setSectionSeo(scrollTarget);
+    else setHomeSeo();
+  }, [scrollTarget]);
+
   React.useEffect(() => {
     if (!scrollTarget) return;
     let tries = 0;
@@ -88,6 +99,9 @@ export const HomePage: React.FC<HomePageProps> = ({ scrollTarget }) => {
       </Suspense>
       <Suspense fallback={<SectionFallback />}>
         <ConnectWithUsSection />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <SisterVenturesSection />
       </Suspense>
     </div>
   );

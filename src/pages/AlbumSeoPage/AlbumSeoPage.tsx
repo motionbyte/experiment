@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { albums } from "../../features/discography/discographyData";
+import { setSeoHead } from "../../seo/setSeoHead";
+import { SITE_ORIGIN } from "../../seo/siteOrigin";
 import styles from "./AlbumSeoPage.module.css";
 
 /**
@@ -11,21 +13,27 @@ export const AlbumSeoPage: React.FC = () => {
   const album = albums.find((a) => a.id === albumId);
 
   useEffect(() => {
-    if (!album) {
-      document.title = "Album — The Lost Symbols";
-      return;
-    }
-    document.title = `${album.title} — The Lost Symbols`;
-    let meta = document.querySelector('meta[name="description"]');
-    if (!meta) {
-      meta = document.createElement("meta");
-      meta.setAttribute("name", "description");
-      document.head.appendChild(meta);
-    }
-    meta.setAttribute(
-      "content",
-      `${album.title} (${album.year}) by The Lost Symbols. ${album.tracks.length} tracks.`
-    );
+    if (!album) return;
+    const path = `/album/${album.id}`;
+    const desc = `${album.title} (${album.year}) by The Lost Symbols. ${album.tracks.length} tracks.`;
+    setSeoHead({
+      title: `${album.title} — The Lost Symbols`,
+      description: desc,
+      canonicalPath: path,
+      jsonLd: {
+        "@context": "https://schema.org",
+        "@type": "MusicAlbum",
+        name: album.title,
+        datePublished: album.year,
+        numTracks: album.tracks.length,
+        url: `${SITE_ORIGIN}${path}`,
+        byArtist: {
+          "@type": "MusicGroup",
+          name: "The Lost Symbols",
+          url: SITE_ORIGIN,
+        },
+      },
+    });
   }, [album]);
 
   if (!album) {

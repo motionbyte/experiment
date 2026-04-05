@@ -1,0 +1,128 @@
+.section {
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+}
+
+.heading {
+  margin: 0 0 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(212, 168, 75, 0.9);
+}
+
+.lead {
+  margin: 0 0 1.25rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 560px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 1rem;
+  width: 100%;
+  margin: 0;
+  padding: 0.75rem;
+  text-align: left;
+  cursor: pointer;
+  border: 1px solid rgba(212, 168, 75, 0.18);
+  border-radius: 14px;
+  background: rgba(8, 8, 12, 0.65);
+  backdrop-filter: blur(10px);
+  color: inherit;
+  font: inherit;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    transform 0.2s;
+}
+
+@media (hover: hover) {
+  .card:hover {
+    border-color: rgba(212, 168, 75, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+    transform: translateY(-2px);
+  }
+}
+
+.card:focus-visible {
+  outline: 2px solid rgba(212, 168, 75, 0.65);
+  outline-offset: 2px;
+}
+
+.thumbWrap {
+  flex-shrink: 0;
+  width: 96px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.thumb {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.cardTitle {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.96);
+  line-height: 1.2;
+}
+
+.cardNative {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.cardMeta {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.45);
+  margin-top: 0.15rem;
+}
+
+.cardDot {
+  opacity: 0.7;
+}
+
+.cardHint {
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(212, 168, 75, 0.85);
+}

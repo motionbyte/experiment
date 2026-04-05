@@ -1,0 +1,261 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+  animation: tls-modal-backdrop-in var(--tls-modal-backdrop-dur) var(--tls-modal-ease-out) both;
+  pointer-events: auto;
+}
+
+@media (min-width: 640px) {
+  .overlay {
+    align-items: center;
+    padding: max(16px, env(safe-area-inset-top, 0px))
+      max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px))
+      max(16px, env(safe-area-inset-left, 0px));
+  }
+}
+
+.sheet {
+  width: 100%;
+  max-width: 520px;
+  /* dvh: mobile address bar ke saath sahi cap */
+  max-height: min(92dvh, 900px);
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(165deg, rgba(18, 16, 22, 0.98) 0%, rgba(6, 6, 10, 0.99) 100%);
+  border: 1px solid rgba(212, 168, 75, 0.22);
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -8px 48px rgba(0, 0, 0, 0.55);
+  position: relative;
+  animation: tls-modal-sheet-in var(--tls-modal-panel-dur) var(--tls-modal-ease-spring) both;
+  animation-delay: 0.06s;
+}
+
+@media (min-width: 640px) {
+  .sheet {
+    border-radius: 20px;
+    max-height: min(85dvh, 900px);
+  }
+}
+
+.closeBtn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.closeBtn:hover {
+  background: rgba(212, 168, 75, 0.25);
+}
+
+/* Poora block (poster + synopsis + credits) ek hi scroll mein */
+.sheetScroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
+
+.heroRow {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 1rem;
+  padding: 1.25rem 1.25rem 0.75rem;
+  padding-right: 3.5rem;
+  flex-shrink: 0;
+}
+
+@media (min-width: 480px) {
+  .heroRow {
+    grid-template-columns: 160px 1fr;
+    gap: 1.25rem;
+    padding: 1.5rem 1.5rem 0.75rem;
+    padding-right: 3.5rem;
+  }
+}
+
+.posterWrap {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.poster {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+}
+
+.heroMeta {
+  min-width: 0;
+}
+
+.kicker {
+  margin: 0 0 0.35rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(212, 168, 75, 0.85);
+}
+
+.title {
+  margin: 0 0 0.2rem;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.15;
+  color: rgba(255, 255, 255, 0.98);
+}
+
+.titleNative {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.metaLine {
+  margin: 0 0 0.35rem;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.dot {
+  margin: 0 0.35rem;
+}
+
+.genres {
+  margin: 0 0 0.5rem;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.imdb {
+  margin: 0 0 0.65rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.imdb strong {
+  color: #f5c518;
+  font-weight: 700;
+}
+
+.primeLink {
+  display: inline-flex;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(130, 200, 255, 0.95);
+  text-decoration: none;
+}
+
+.primeLink:hover {
+  text-decoration: underline;
+}
+
+.body {
+  padding: 0 1.25rem calc(1.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 480px) {
+  .body {
+    padding: 0 1.5rem calc(1.75rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+.section {
+  margin-top: 1.25rem;
+}
+
+.section:first-child {
+  margin-top: 0.5rem;
+}
+
+.sectionTitle {
+  margin: 0 0 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(212, 168, 75, 0.88);
+}
+
+.synopsis {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.dl {
+  margin: 0;
+}
+
+.dlRow {
+  display: grid;
+  grid-template-columns: minmax(0, 110px) 1fr;
+  gap: 0.5rem 1rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.dlRow dt {
+  margin: 0;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.dlRow dd {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.dlHighlight dt,
+.dlHighlight dd {
+  color: rgba(212, 190, 140, 0.98);
+}
+
+.dlHighlight dd {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.inlineLink {
+  color: rgba(130, 200, 255, 0.95);
+}
+
+.inlineLink:hover {
+  text-decoration: underline;
+}

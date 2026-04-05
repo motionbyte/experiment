@@ -1,8 +1,19 @@
-import React from "react";
-import { isRouteErrorResponse, useRouteError } from "react-router-dom";
+import React, { useEffect } from "react";
+import { isRouteErrorResponse, useLocation, useRouteError } from "react-router-dom";
+import { setSeoHead } from "../../seo/setSeoHead";
 
 export const RouteError: React.FC = () => {
   const err = useRouteError();
+  const location = useLocation();
+
+  useEffect(() => {
+    setSeoHead({
+      title: "Error — The Lost Symbols",
+      description: "Something went wrong loading this page. Try again or return to the home page.",
+      canonicalPath: location.pathname || "/",
+      robots: "noindex, nofollow",
+    });
+  }, [location.pathname]);
 
   const message = (() => {
     if (isRouteErrorResponse(err)) {

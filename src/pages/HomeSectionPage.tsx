@@ -11,6 +11,7 @@ const SECTION_IDS = new Set([
   "photos",
   "videos",
   "contact",
+  "ventures",
 ]);
 
 /**

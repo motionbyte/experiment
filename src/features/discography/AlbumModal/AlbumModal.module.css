@@ -10,13 +10,8 @@
   padding: max(16px, env(safe-area-inset-top, 0px))
     max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px))
     max(16px, env(safe-area-inset-left, 0px));
-  animation: fadeIn 0.2s ease-out;
+  animation: tls-modal-backdrop-in var(--tls-modal-backdrop-dur) var(--tls-modal-ease-out) both;
   pointer-events: auto;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 .modal {
@@ -29,23 +24,13 @@
   overflow: hidden;
   box-shadow: var(--shadow);
   position: relative;
-  animation: slideUp 0.25s ease-out;
-  transition: max-width 0.24s ease-out;
+  animation: tls-modal-dialog-in var(--tls-modal-panel-dur) var(--tls-modal-ease-spring) both;
+  animation-delay: 0.06s;
+  transition: max-width 0.28s var(--tls-modal-ease-out);
 }
 
 .modalWide {
   max-width: 960px;
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .closeBtn {

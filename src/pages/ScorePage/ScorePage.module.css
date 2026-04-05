@@ -1,0 +1,220 @@
+/* Standalone Score page — amber/gold accent, separate from band cyan-magenta hero */
+
+/* Match global .app-main: none so WebGL fluid gets pointer events in margins / empty area */
+.main {
+  position: relative;
+  z-index: 2;
+  min-height: 100svh;
+  pointer-events: none;
+  padding-bottom: calc(48px + env(safe-area-inset-bottom, 0px));
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+.inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: clamp(1rem, 4vw, 2rem);
+  padding-top: calc(1.25rem + env(safe-area-inset-top, 0px));
+  pointer-events: auto;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: clamp(2.5rem, 8vw, 5rem);
+  flex-wrap: wrap;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: rgba(212, 180, 120, 0.95);
+  transition: color 0.2s, text-shadow 0.2s;
+}
+
+.back:hover {
+  color: rgba(255, 220, 170, 1);
+  text-shadow: 0 0 20px rgba(212, 168, 75, 0.35);
+}
+
+.badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(212, 168, 75, 0.75);
+  padding: 0.35rem 0.75rem;
+  border: 1px solid rgba(212, 168, 75, 0.25);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: clamp(4rem, 14vw, 7rem);
+}
+
+.filmStrip {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 1.5rem;
+  opacity: 0.85;
+}
+
+.perf {
+  width: 8px;
+  height: 28px;
+  border-radius: 1px;
+  background: linear-gradient(
+    180deg,
+    rgba(212, 168, 75, 0.15) 0%,
+    rgba(212, 168, 75, 0.55) 40%,
+    rgba(212, 168, 75, 0.35) 100%
+  );
+  animation: perfPulse 2.4s ease-in-out infinite;
+}
+
+.perf:nth-child(odd) {
+  animation-delay: 0.15s;
+}
+.perf:nth-child(3n) {
+  animation-delay: 0.3s;
+}
+
+@keyframes perfPulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scaleY(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+.title {
+  margin: 0 0 0.85rem;
+  line-height: 1.02;
+}
+
+/* Sturdy display caps — Bebas Neue is loaded in index.html (2× hero scale) */
+.titleScore {
+  display: block;
+  font-family: "Bebas Neue", Impact, "Arial Narrow", system-ui, sans-serif;
+  font-weight: 400;
+  font-size: clamp(6.5rem, 28vw, 12rem);
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.98);
+  text-shadow:
+    0 4px 0 rgba(0, 0, 0, 0.45),
+    0 0 96px rgba(212, 168, 75, 0.18),
+    0 0 200px rgba(0, 0, 0, 0.55);
+}
+
+.titleAccent {
+  display: block;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter",
+    sans-serif;
+  font-size: clamp(1.3rem, 3.6vw, 1.56rem);
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(212, 180, 120, 0.95);
+  margin-bottom: 0.22rem;
+}
+
+.subtitle {
+  margin: 0 auto;
+  max-width: 28rem;
+  font-size: clamp(1.05rem, 2.8vw, 1.25rem);
+  line-height: 1.38;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.divider {
+  height: 1px;
+  width: min(100%, 640px);
+  margin: clamp(3.25rem, 9vw, 5rem) auto;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 168, 75, 0.45) 20%,
+    rgba(255, 220, 160, 0.35) 50%,
+    rgba(212, 168, 75, 0.45) 80%,
+    transparent
+  );
+}
+
+.block {
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+}
+
+.blockTitle {
+  margin: 0 0 1rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(212, 168, 75, 0.9);
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  border-radius: 12px;
+  border: 1px solid rgba(212, 168, 75, 0.15);
+  background: rgba(8, 8, 12, 0.55);
+  backdrop-filter: blur(8px);
+}
+
+.itemIcon {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+  background: rgba(212, 168, 75, 0.12);
+  color: rgba(212, 180, 120, 0.95);
+}
+
+.itemText {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.footerNote {
+  margin-top: clamp(3rem, 8vw, 5rem);
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: center;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.38);
+}

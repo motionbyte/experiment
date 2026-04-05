@@ -1,0 +1,136 @@
+.section {
+  position: relative;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 3rem) max(var(--section-pad-inline), env(safe-area-inset-left, 0px))
+    calc(2.5rem + env(safe-area-inset-bottom, 0px))
+    max(var(--section-pad-inline), env(safe-area-inset-right, 0px));
+  pointer-events: none;
+}
+
+.divider {
+  height: 2px;
+  width: 100%;
+  margin: 0 0 clamp(1.5rem, 4vw, 2rem);
+  border: none;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(212, 168, 75, 0.45) 18%,
+    rgba(255, 200, 120, 0.55) 50%,
+    rgba(180, 120, 60, 0.4) 82%,
+    transparent 100%
+  );
+  box-shadow: 0 0 24px rgba(212, 168, 75, 0.15);
+}
+
+.kicker {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(212, 180, 120, 0.85);
+}
+
+.heading {
+  margin: 0 0 clamp(1.25rem, 3vw, 1.75rem);
+  font-size: clamp(1.15rem, 2.8vw, 1.4rem);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1rem, 3vw, 1.5rem);
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 1.35rem 1.35rem 1.15rem;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 14px;
+  border: 1px solid rgba(212, 168, 75, 0.22);
+  background: linear-gradient(
+    165deg,
+    rgba(12, 10, 8, 0.92) 0%,
+    rgba(18, 14, 12, 0.88) 45%,
+    rgba(8, 8, 12, 0.94) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 220, 160, 0.06),
+    0 12px 40px rgba(0, 0, 0, 0.45);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(212, 168, 75, 0.42);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 220, 160, 0.1),
+    0 16px 48px rgba(0, 0, 0, 0.5),
+    0 0 28px rgba(212, 168, 75, 0.08);
+}
+
+.card:focus-visible {
+  outline: 2px solid rgba(212, 168, 75, 0.75);
+  outline-offset: 3px;
+}
+
+.cardTag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(212, 180, 120, 0.9);
+}
+
+.cardTitle {
+  font-size: clamp(1.15rem, 2.8vw, 1.35rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--text-h);
+  line-height: 1.25;
+}
+
+.cardBlurb {
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.68);
+  flex: 1;
+}
+
+.cardHint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(212, 180, 120, 0.95);
+}
+
+.externalGlyph {
+  font-size: 1rem;
+  line-height: 1;
+  opacity: 0.9;
+}
