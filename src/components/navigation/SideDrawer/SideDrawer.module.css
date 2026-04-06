@@ -6,13 +6,24 @@
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(218, 165, 32, 0.35);
   background-color: var(--bg);
-  box-shadow: var(--shadow);
+  box-shadow:
+    var(--shadow),
+    0 0 20px rgba(212, 168, 75, 0.12);
   cursor: pointer;
   display: grid;
   place-items: center;
   isolation: isolate;
+}
+
+.trigger:focus-visible {
+  outline: 2px solid rgba(218, 165, 32, 0.65);
+  outline-offset: 2px;
+}
+
+.trigger:hover .bars {
+  filter: brightness(1.12);
 }
 
 /* Drawer open: hide hamburger — “Menu” title was overlapping it (last letters peeking out). */
@@ -22,12 +33,22 @@
   visibility: hidden;
 }
 
+/* Metallic gold bars — same family as tls-gold-heading */
 .bars {
   width: 18px;
   height: 2px;
-  background: var(--text-h);
+  background: linear-gradient(
+    90deg,
+    #6b4e0a 0%,
+    #c9a227 28%,
+    #f5e6b8 48%,
+    #ffd700 52%,
+    #daa520 72%,
+    #3d2d06 100%
+  );
   position: relative;
   border-radius: 999px;
+  box-shadow: 0 0 10px rgba(212, 168, 75, 0.35);
 }
 
 .bars::before,
@@ -37,8 +58,9 @@
   left: 0;
   width: 18px;
   height: 2px;
-  background: var(--text-h);
+  background: inherit;
   border-radius: 999px;
+  box-shadow: inherit;
 }
 
 .bars::before {
