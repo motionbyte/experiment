@@ -19,7 +19,7 @@
   /* No vertical gradient — global .app-shell::before dim layer keeps shade same as sections below */
   background: radial-gradient(
     circle at 50% 45%,
-    rgba(255, 255, 255, 0.045),
+    rgba(180, 145, 90, 0.04),
     transparent 58%
   );
 }
@@ -40,8 +40,8 @@
   height: 14px;
   transform: translate(-50%, -50%);
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  box-shadow: 0 0 10px rgba(62, 243, 255, 0.5);
+  border: 1px solid rgba(180, 150, 100, 0.35);
+  box-shadow: 0 0 10px rgba(140, 110, 60, 0.35);
   opacity: 0.6;
   pointer-events: none;
 }
@@ -55,12 +55,12 @@
   transform: translate(-50%, -50%);
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   background:
-    linear-gradient(135deg, rgba(62, 243, 255, 0.2) 0%, rgba(62, 243, 255, 0) 50%),
-    linear-gradient(225deg, rgba(255, 62, 214, 0.18) 0%, rgba(255, 62, 214, 0) 50%),
-    linear-gradient(180deg, rgba(155, 91, 255, 0.12) 0%, transparent 70%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, transparent 60%);
+    linear-gradient(135deg, rgba(160, 125, 65, 0.14) 0%, rgba(120, 90, 40, 0) 50%),
+    linear-gradient(225deg, rgba(100, 75, 35, 0.12) 0%, rgba(60, 45, 20, 0) 50%),
+    linear-gradient(180deg, rgba(140, 115, 70, 0.07) 0%, transparent 70%),
+    linear-gradient(180deg, rgba(90, 70, 40, 0.06) 0%, transparent 60%);
   filter: blur(20px);
-  opacity: 0.92;
+  opacity: 0.78;
   pointer-events: none;
 }
 
@@ -74,13 +74,13 @@
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   background: conic-gradient(
     from 90deg,
-    rgba(62, 243, 255, 0),
-    rgba(62, 243, 255, 0.18),
-    rgba(255, 62, 214, 0),
-    rgba(155, 91, 255, 0.16),
-    rgba(62, 243, 255, 0)
+    rgba(120, 95, 55, 0),
+    rgba(160, 125, 55, 0.12),
+    rgba(90, 70, 35, 0),
+    rgba(70, 55, 28, 0.1),
+    rgba(100, 80, 45, 0)
   );
-  opacity: 0.95;
+  opacity: 0.82;
   filter: blur(18px);
   animation: spin 10s linear infinite;
 }
@@ -89,9 +89,9 @@
   position: relative;
   width: min(680px, 90vw);
   height: min(680px, 90vw);
-  filter: drop-shadow(0 0 26px rgba(62, 243, 255, 0.75))
-    drop-shadow(0 0 95px rgba(155, 91, 255, 0.55))
-    drop-shadow(0 0 65px rgba(255, 62, 214, 0.28));
+  filter: drop-shadow(0 0 22px rgba(120, 95, 50, 0.38))
+    drop-shadow(0 0 72px rgba(80, 62, 32, 0.28))
+    drop-shadow(0 0 48px rgba(60, 48, 28, 0.2));
 }
 
 .canvasMount {

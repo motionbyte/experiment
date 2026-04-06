@@ -3,7 +3,13 @@ import * as THREE from "three";
 import { runFrameLoop } from "../../../utils/visibilityFrame";
 // @ts-expect-error three/examples has no TS types in-core
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
+// @ts-expect-error three/examples has no TS types in-core
+import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import styles from "./LogoIntro.module.css";
+import {
+  applySphericalUvIfMissing,
+  createBrushedGoldSurfaceTextures,
+} from "./logoGoldSurface";
 
 type Status =
   | { kind: "loading" }
@@ -24,15 +30,23 @@ export const LogoIntro: React.FC = () => {
 
     setStatus({ kind: "loading" });
 
+    THREE.ColorManagement.enabled = true;
+
     let renderer: any = null;
+    let envMap: { dispose: () => void } | null = null;
+    let disposeGoldSurface: (() => void) | null = null;
     try {
       renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha: true,
         powerPreference: "high-performance",
       });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2.5));
       renderer.setClearColor(0x000000, 0);
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      /* Punchy highlights + deep valleys (reference: satin gold on black) */
+      renderer.toneMappingExposure = 0.96;
       renderer.domElement.style.width = "100%";
       renderer.domElement.style.height = "100%";
       renderer.domElement.style.display = "block";
@@ -49,38 +63,65 @@ export const LogoIntro: React.FC = () => {
     camera.position.set(0, 0, 240);
     camera.lookAt(0, 0, 0);
 
-    // Lighting tuned for "bright star" vibe
-    const ambient = new THREE.AmbientLight(0xffffff, 0.45);
+    /* Room IBL so MeshPhysical metalness actually reads as polished gold (reflections). */
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    const roomEnv = new RoomEnvironment();
+    /* Lower sigma = sharper IBL reflections (reads more “jewelry / studio”) */
+    envMap = pmrem.fromScene(roomEnv, 0.01).texture;
+    scene.environment = envMap;
+    pmrem.dispose();
+
+    const goldSurface = createBrushedGoldSurfaceTextures();
+    disposeGoldSurface = goldSurface.dispose;
+    const maxAniso = renderer.capabilities.getMaxAnisotropy?.() ?? 1;
+    goldSurface.roughnessMap.anisotropy = maxAniso;
+    goldSurface.normalMap.anisotropy = maxAniso;
+    const mapRepeat = 4;
+    goldSurface.roughnessMap.repeat.set(mapRepeat, mapRepeat);
+    goldSurface.normalMap.repeat.set(mapRepeat, mapRepeat);
+
+    // Strong key from top-left, low ambient = deep grooves + sharp speculars (like reference)
+    const ambient = new THREE.AmbientLight(0xd4c4a8, 0.22);
     scene.add(ambient);
-    const key = new THREE.DirectionalLight(0x3ef3ff, 1.5);
-    key.position.set(1.5, 1.2, 1.8);
+    const key = new THREE.DirectionalLight(0xfff2d4, 2.05);
+    key.position.set(2.4, 2.5, 1.35);
     scene.add(key);
-    const rim = new THREE.DirectionalLight(0xff3ed6, 1.1);
-    rim.position.set(-1.2, 0.2, 1.0);
+    const rim = new THREE.DirectionalLight(0xc9a54a, 0.95);
+    rim.position.set(-1.35, 0.15, 1.05);
     scene.add(rim);
-    const fill = new THREE.DirectionalLight(0x9b5bff, 0.75);
-    fill.position.set(0.2, -1.4, 0.8);
+    const fill = new THREE.DirectionalLight(0x6b5230, 0.48);
+    fill.position.set(0.15, -1.5, 0.75);
     scene.add(fill);
 
     const group = new THREE.Group();
     scene.add(group);
     group.position.set(0, 0, 0);
 
+    /* Physical gold + procedural roughness/normal = richer breakup (not flat “local” CG) */
     const baseMat = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color("#050513"),
-      roughness: 0.18,
-      metalness: 0.82,
-      clearcoat: 0.85,
-      clearcoatRoughness: 0.2,
-      envMapIntensity: 1.0,
+      color: new THREE.Color("#c9a050"),
+      metalness: 1,
+      roughness: 0.26,
+      roughnessMap: goldSurface.roughnessMap,
+      normalMap: goldSurface.normalMap,
+      normalScale: new THREE.Vector2(0.14, 0.14),
+      envMapIntensity: 1.92,
+      emissive: new THREE.Color("#120c06"),
+      emissiveIntensity: 0.045,
+      specularIntensity: 1.05,
+      specularColor: new THREE.Color("#fff4dc"),
+      clearcoat: 0.12,
+      clearcoatRoughness: 0.22,
+      anisotropy: 0.32,
+      anisotropyRotation: Math.PI * 0.5,
     });
 
     const glowMat = new THREE.ShaderMaterial({
       uniforms: {
-        uColorA: { value: new THREE.Color("#3ef3ff") },
-        uColorB: { value: new THREE.Color("#ff3ed6") },
-        uPower: { value: 1.35 },
-        uIntensity: { value: 2.6 },
+        uColorA: { value: new THREE.Color("#d4b068") },
+        uColorB: { value: new THREE.Color("#6a5220") },
+        uPower: { value: 1.38 },
+        uIntensity: { value: 1.22 },
       },
       vertexShader: `
         varying vec3 vN;
@@ -138,14 +179,43 @@ export const LogoIntro: React.FC = () => {
               const mesh = child as any;
               if ((mesh as any).isMesh) {
                 const geo = (mesh as any).geometry;
-                const n = geo && geo.getAttribute ? geo.getAttribute("normal") : null;
-                if (!n || (n as any).count === 0) geo.computeVertexNormals();
+                if (geo) {
+                  const n = geo.getAttribute?.("normal");
+                  if (!n || n.count === 0) geo.computeVertexNormals();
+                  /* Vertex colors from OBJ often multiply down to black — remove */
+                  if (geo.getAttribute?.("color"))
+                    geo.deleteAttribute("color");
+                  applySphericalUvIfMissing(geo);
+                  try {
+                    if (geo.index) {
+                      geo.computeTangents();
+                      (geo as any).userData.tangentsOk = true;
+                    } else {
+                      (geo as any).userData.tangentsOk = false;
+                    }
+                  } catch {
+                    (geo as any).userData.tangentsOk = false;
+                  }
+                }
               }
             });
 
             obj.traverse((child: any) => {
               const mesh = child as any;
-              if ((mesh as any).isMesh) mesh.material = baseMat;
+              if (!(mesh as any).isMesh) return;
+              /* Per-mesh material so multi-group OBJs don’t share broken refs */
+              const mat = baseMat.clone();
+              mat.vertexColors = false;
+              const geo = (mesh as any).geometry as THREE.BufferGeometry | undefined;
+              if (geo && (geo as any).userData?.tangentsOk === false) {
+                mat.normalMap = null;
+                mat.normalScale?.set(1, 1);
+              }
+              if (Array.isArray(mesh.material)) {
+                mesh.material = mesh.material.map(() => mat.clone());
+              } else {
+                mesh.material = mat;
+              }
             });
 
             const box = new THREE.Box3().setFromObject(obj);
@@ -298,7 +368,7 @@ export const LogoIntro: React.FC = () => {
           }
         }
 
-        (glowMat.uniforms.uIntensity.value as number) = 2.6 + Math.sin(t * 3.2) * 0.22;
+        (glowMat.uniforms.uIntensity.value as number) = 1.22 + Math.sin(t * 3.2) * 0.06;
       }
 
       renderer.render(scene, camera);
@@ -312,6 +382,10 @@ export const LogoIntro: React.FC = () => {
       targetEl.removeEventListener("pointermove", handlePointerMove as any);
       targetEl.removeEventListener("pointerup", handlePointerUp as any);
       targetEl.removeEventListener("pointercancel", handlePointerUp as any);
+      envMap?.dispose();
+      scene.environment = null;
+      disposeGoldSurface?.();
+      disposeGoldSurface = null;
       renderer?.dispose();
       if (renderer?.domElement && renderer.domElement.parentElement === mount) {
         mount.removeChild(renderer.domElement);
