@@ -284,19 +284,25 @@
   }
 }
 
-/* Tablet + phone: timeline single column, readable art + text */
+/* Tablet + phone: timeline single column; narrow viewports stack title/year under art */
 @media (max-width: 900px) {
   .heading {
     letter-spacing: 0.1em;
   }
 
+  .titleRow {
+    margin-bottom: clamp(28px, 6vw, 40px);
+  }
+
   .albumLeft,
   .albumRight {
-    flex-direction: row;
+    flex-direction: column;
+    align-items: center;
     padding-left: 0;
     padding-right: 0;
     justify-content: flex-start;
-    margin-bottom: 32px;
+    margin-bottom: clamp(2rem, 7vw, 2.75rem);
+    min-height: 0;
   }
 
   .pathSvg {
@@ -307,23 +313,75 @@
   }
 
   .albumCard {
-    max-width: none;
-    margin-left: calc(48px + env(safe-area-inset-left, 0px));
+    flex-direction: column;
+    align-items: center;
+    max-width: min(22rem, 100%);
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: max(12px, env(safe-area-inset-left, 0px));
+    padding-right: max(12px, env(safe-area-inset-right, 0px));
+    gap: clamp(0.85rem, 3vw, 1.15rem);
+  }
+
+  .albumRight .albumCard {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .info {
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .albumRight .info {
+    align-items: center;
+    text-align: center;
+  }
+
+  .albumLeft .albumCard:hover .info,
+  .albumLeft .albumCard:focus-visible .info,
+  .albumRight .albumCard:hover .info,
+  .albumRight .albumCard:focus-visible .info {
+    transform: none;
+  }
+
+  .albumCard:hover,
+  .albumCard:focus-visible {
+    gap: clamp(0.95rem, 3.5vw, 1.35rem);
   }
 
   .albumTitle {
-    font-size: 1.5rem;
+    font-size: clamp(1.2rem, 4.2vw, 1.5rem);
     white-space: normal;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
+    text-align: center;
+    width: 100%;
+    line-height: 1.25;
   }
 
   .albumYear {
-    font-size: 1.15rem;
+    font-size: clamp(0.95rem, 3.2vw, 1.15rem);
     white-space: normal;
+    text-align: center;
+    width: 100%;
   }
 
-  .albumLeft,
-  .albumRight {
-    min-height: min(320px, 70svh);
+  .albumTitleInner,
+  .albumYearInner {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 900px) and (hover: none) {
+  .albumCard {
+    gap: clamp(0.85rem, 3vw, 1.15rem);
+  }
+
+  .albumLeft .info,
+  .albumRight .info {
+    transform: none;
   }
 }

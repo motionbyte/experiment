@@ -10,7 +10,7 @@
 
 .inner {
   pointer-events: auto;
-  max-width: 52rem;
+  max-width: 56rem;
   margin: 0 auto;
 }
 
@@ -36,7 +36,7 @@
 
 .tagline {
   text-align: center;
-  margin: 0 auto 36px;
+  margin: 0 auto 28px;
   max-width: 42rem;
   padding: 0 0.5rem;
   font-size: clamp(0.9rem, 2.8vw, 1rem);
@@ -49,10 +49,169 @@
   font-size: inherit;
 }
 
-.placeholder {
+.grid {
+  list-style: none;
   margin: 0;
-  text-align: center;
-  font-size: clamp(0.92rem, 2.4vw, 1rem);
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(18px, 3vw, 24px);
+}
+
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.cardWrap {
+  margin: 0;
+  padding: 0;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+
+.cardMain {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  flex: 1;
+}
+
+.cardMain:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.cardBody {
+  padding: 18px 18px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.cardMeta {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  font-size: 0.78rem;
+}
+
+.cardMeta :global(.tls-gold-year) {
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  font-size: inherit;
+}
+
+.cardOutlet {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(218, 165, 32, 0.55);
+  background: linear-gradient(
+    165deg,
+    rgba(92, 66, 8, 0.35) 0%,
+    rgba(40, 30, 6, 0.55) 100%
+  );
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #e6cf7a;
+  text-shadow: 0 0 12px rgba(218, 165, 32, 0.2);
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: clamp(0.95rem, 2.4vw, 1.05rem);
+  line-height: 1.35;
+}
+
+.cardTitle :global(.tls-gold-heading) {
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  font-size: inherit;
+}
+
+.cardExcerpt {
+  margin: 0;
+  font-size: 0.88rem;
   line-height: 1.55;
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--text-m);
+  flex: 1;
+}
+
+.cardCta {
+  margin-top: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background-image: linear-gradient(
+    165deg,
+    #9a7309 0%,
+    #c9a227 22%,
+    #f5e6b8 38%,
+    #ffd700 48%,
+    #fffef5 52%,
+    #daa520 62%,
+    #b8860b 78%,
+    #6b4e0a 100%
+  );
+  background-size: 150% 150%;
+  background-position: 38% 42%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.originalLink {
+  display: block;
+  padding: 12px 18px;
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text-m);
+  text-decoration: none;
+  border-top: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.25);
+  transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.originalLink:hover {
+  background: rgba(201, 162, 39, 0.1);
+  color: #e8c547;
+  border-top-color: rgba(218, 165, 32, 0.35);
+  box-shadow: inset 0 1px 0 rgba(255, 215, 0, 0.08);
+}
+
+.originalLink:focus-visible {
+  outline: 2px solid rgba(218, 165, 32, 0.65);
+  outline-offset: -2px;
 }

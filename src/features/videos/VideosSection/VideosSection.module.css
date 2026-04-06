@@ -204,14 +204,19 @@
     letter-spacing: 0.1em;
   }
 
+  .tagline {
+    margin-bottom: clamp(28px, 6vw, 40px);
+  }
+
   .videoLeft,
   .videoRight {
     flex-direction: column;
     padding-left: 0;
     padding-right: 0;
     justify-content: flex-start;
-    align-items: flex-start;
-    margin-bottom: 32px;
+    align-items: stretch;
+    margin-bottom: clamp(2rem, 7vw, 2.75rem);
+    min-height: 0;
   }
 
   .pathSvg {
@@ -222,14 +227,22 @@
   }
 
   .videoCard {
-    max-width: none;
     flex-direction: column !important;
-    margin-left: calc(48px + env(safe-area-inset-left, 0px));
+    align-items: stretch;
+    width: 100%;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    gap: clamp(0.65rem, 2.5vw, 0.85rem);
+    text-align: left !important;
+  }
+
+  .videoRight .videoCard {
     text-align: left !important;
   }
 
   .thumbWrap {
-    width: min(100%, min(400px, 92vw));
+    width: 100%;
     max-width: 100%;
   }
 
@@ -239,16 +252,19 @@
     aspect-ratio: 16 / 9;
   }
 
+  .info {
+    min-width: 0;
+    width: 100%;
+    align-items: flex-start;
+    text-align: left;
+  }
+
   .videoTitle {
-    font-size: 1.35rem;
+    font-size: clamp(1.15rem, 4vw, 1.35rem);
+    line-height: 1.25;
   }
 
   .videoDate {
-    font-size: 1.1rem;
-  }
-
-  .videoLeft,
-  .videoRight {
-    min-height: min(280px, 65svh);
+    font-size: clamp(0.95rem, 3.2vw, 1.1rem);
   }
 }

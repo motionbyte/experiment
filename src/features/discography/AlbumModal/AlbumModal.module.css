@@ -1,4 +1,11 @@
 .overlay {
+  /* Gold palette for album modal + nested pickers (siblings of .modal inherit from here) */
+  --album-gold: #daa520;
+  --album-gold-bright: #f5e0a0;
+  --album-gold-muted: rgba(201, 162, 39, 0.85);
+  --album-gold-bg: rgba(201, 162, 39, 0.14);
+  --album-gold-border: rgba(218, 165, 32, 0.42);
+  --album-gold-border-soft: rgba(218, 165, 32, 0.22);
   position: fixed;
   inset: 0;
   z-index: 100;
@@ -16,7 +23,7 @@
 
 .modal {
   background: var(--bg);
-  border: 1px solid var(--border);
+  border: 1px solid var(--album-gold-border-soft);
   border-radius: 16px;
   max-width: 480px;
   width: 100%;
@@ -65,19 +72,20 @@
   height: 36px;
   border: none;
   border-radius: 50%;
-  background: var(--surface);
-  color: var(--text);
+  background: rgba(201, 162, 39, 0.12);
+  color: var(--album-gold-bright);
   font-size: 24px;
   line-height: 1;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s;
+  transition: background 0.2s, color 0.2s;
 }
 
 .closeBtn:hover {
-  background: var(--border);
+  background: var(--album-gold-bg);
+  color: #fffef5;
 }
 
 .header {
@@ -225,8 +233,8 @@
   max-height: min(56vh, 500px);
   overflow: hidden;
   border-radius: 12px;
-  background: rgba(0, 0, 0, 0.42);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(24, 18, 6, 0.55);
+  border: 1px solid var(--album-gold-border-soft);
 }
 
 /* Desktop: outer wrapper is layout-transparent so grid still sees .lyricsPane */
@@ -237,10 +245,10 @@
 }
 
 .tracksTitle {
+  composes: goldHeading;
   margin: 0 0 12px;
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--text-h);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -253,7 +261,7 @@
 
 .trackItem {
   padding: 10px 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--album-gold-border-soft);
 }
 
 .trackItem:last-child {
@@ -273,18 +281,19 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: var(--accent-bg);
-  color: var(--accent);
+  background: var(--album-gold-bg);
+  color: var(--album-gold);
   font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s;
+  transition: background 0.2s, color 0.2s;
+  box-shadow: inset 0 0 0 1px var(--album-gold-border-soft);
 }
 
 .trackRow:hover .playIcon {
-  background: var(--accent);
-  color: var(--bg);
+  background: linear-gradient(165deg, #8a6a12 0%, #daa520 45%, #f5e6b8 55%, #b8860b 100%);
+  color: #1a1206;
 }
 
 .playBtnPlaceholder {
@@ -295,11 +304,13 @@
 }
 
 .trackName {
+  composes: goldHeading;
   flex: 1;
   min-width: 0;
-  color: var(--text);
   font-size: 0.95rem;
   margin-bottom: 0;
+  font-weight: 600;
+  letter-spacing: 0.03em;
 }
 
 .trackRowEnd {
@@ -312,46 +323,49 @@
 .lyricsBtn {
   font-size: 12px;
   padding: 4px 10px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--album-gold-border);
   border-radius: 8px;
   background: transparent;
-  color: var(--accent);
+  color: var(--album-gold-bright);
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .lyricsBtn:hover {
-  background: var(--accent-bg);
-  border-color: var(--accent);
+  background: var(--album-gold-bg);
+  border-color: var(--album-gold);
+  color: #fffef5;
 }
 
 .tabsBtn {
   font-size: 12px;
   padding: 4px 10px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--album-gold-border);
   border-radius: 8px;
   background: transparent;
-  color: var(--accent);
+  color: var(--album-gold-bright);
   flex-shrink: 0;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .tabsBtn:hover {
-  background: var(--accent-bg);
-  border-color: var(--accent);
+  background: var(--album-gold-bg);
+  border-color: var(--album-gold);
+  color: #fffef5;
 }
 
 .lyricsBtnActive {
   composes: lyricsBtn;
-  background: var(--accent-bg);
-  border-color: var(--accent);
+  background: var(--album-gold-bg);
+  border-color: var(--album-gold);
+  color: #fffef5;
 }
 
 .lyricsBtnDisabled {
   composes: lyricsBtn;
-  color: rgba(255, 255, 255, 0.45);
-  border-color: rgba(255, 255, 255, 0.12);
+  color: rgba(180, 150, 90, 0.45);
+  border-color: rgba(218, 165, 32, 0.18);
   cursor: default;
   pointer-events: none;
 }
@@ -363,14 +377,14 @@
   gap: 12px;
   padding: 12px 14px 10px;
   flex-shrink: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--album-gold-border-soft);
 }
 
 .lyricsTrackTitle {
+  composes: goldHeading;
   margin: 0;
   font-size: 1.05rem;
   font-weight: 700;
-  color: rgba(255, 250, 245, 0.96);
   line-height: 1.25;
 }
 
@@ -407,7 +421,7 @@
   padding: 4px 0 0;
   font-size: 13px;
   line-height: 1.55;
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(245, 220, 160, 0.92);
   white-space: pre-wrap;
   word-break: break-word;
 }
@@ -415,7 +429,7 @@
 .lyricsPlaceholder,
 .lyricsEmpty {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--album-gold-muted);
   padding: 8px 0;
 }
 
@@ -484,8 +498,8 @@
     min-height: 0;
     overflow: visible;
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(0, 0, 0, 0.42);
+    border: 1px solid var(--album-gold-border-soft);
+    background: rgba(24, 18, 6, 0.55);
     box-shadow: none;
   }
 
@@ -528,18 +542,18 @@
   max-height: min(85vh, 560px);
   overflow-y: auto;
   background: var(--bg);
-  border: 1px solid var(--border);
+  border: 1px solid var(--album-gold-border-soft);
   border-radius: 14px;
   padding: 20px 18px 16px;
   box-shadow: var(--shadow);
 }
 
 .instrumentPickerTitle {
+  composes: goldHeading;
   margin: 0 0 16px;
   font-size: 1.1rem;
   font-weight: 700;
   text-align: center;
-  color: var(--text-h);
   line-height: 1.35;
 }
 
@@ -563,17 +577,17 @@
   font-weight: 600;
   padding: 12px 14px;
   border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text);
+  border: 1px solid var(--album-gold-border);
+  background: rgba(201, 162, 39, 0.06);
+  color: var(--album-gold-bright);
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .instrumentPickerOption:hover {
-  background: var(--accent-bg);
-  border-color: var(--accent);
-  color: var(--accent);
+  background: var(--album-gold-bg);
+  border-color: var(--album-gold);
+  color: #fffef5;
 }
 
 .instrumentPickerCancel {
@@ -584,16 +598,17 @@
   font-size: 0.88rem;
   font-weight: 600;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid var(--album-gold-border-soft);
   background: transparent;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--album-gold-muted);
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .instrumentPickerCancel:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.22);
+  background: var(--album-gold-bg);
+  border-color: var(--album-gold-border);
+  color: var(--album-gold-bright);
 }
 
 .comingSoonBackdrop {
@@ -615,17 +630,17 @@
   max-width: 340px;
   text-align: center;
   background: var(--bg);
-  border: 1px solid var(--border);
+  border: 1px solid var(--album-gold-border-soft);
   border-radius: 14px;
   padding: 24px 20px 20px;
   box-shadow: var(--shadow);
 }
 
 .comingSoonTitle {
+  composes: goldHeading;
   margin: 0 0 10px;
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--text-h);
   letter-spacing: 0.02em;
 }
 
@@ -633,7 +648,7 @@
   margin: 0 0 20px;
   font-size: 0.92rem;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.72);
+  color: var(--album-gold-muted);
 }
 
 .comingSoonOk {
@@ -642,13 +657,15 @@
   font-size: 0.92rem;
   font-weight: 600;
   border-radius: 999px;
-  border: 1px solid var(--accent);
-  background: var(--accent-bg);
-  color: var(--accent);
+  border: 1px solid var(--album-gold);
+  background: var(--album-gold-bg);
+  color: var(--album-gold-bright);
   cursor: pointer;
-  transition: background 0.2s, filter 0.2s;
+  transition: background 0.2s, filter 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .comingSoonOk:hover {
   filter: brightness(1.08);
+  background: rgba(201, 162, 39, 0.22);
+  color: #fffef5;
 }

@@ -1,19 +1,21 @@
 .vinyl {
   position: relative;
   border-radius: 50%;
+  /* Warm black — reads with gold label like a tinted record */
   background: linear-gradient(
     135deg,
-    #0a0a0a 0%,
-    #1a1a1a 15%,
-    #0d0d0d 30%,
-    #151515 50%,
-    #0a0a0a 70%,
-    #111 100%
+    #0c0a06 0%,
+    #1a1510 15%,
+    #0e0c08 30%,
+    #16130e 50%,
+    #0a0906 70%,
+    #12100c 100%
   );
   box-shadow:
     inset 0 0 20px rgba(0, 0, 0, 0.8),
-    0 0 0 1px rgba(255, 255, 255, 0.08),
-    0 4px 20px rgba(0, 0, 0, 0.5);
+    0 0 0 1px rgba(201, 162, 39, 0.22),
+    0 4px 20px rgba(0, 0, 0, 0.5),
+    0 0 24px rgba(212, 168, 75, 0.12);
   flex-shrink: 0;
   animation: vinylSpin 4s linear infinite;
 }
@@ -26,8 +28,8 @@
     circle at center,
     transparent 0px,
     transparent 2px,
-    rgba(255, 255, 255, 0.03) 2px,
-    rgba(255, 255, 255, 0.03) 3px
+    rgba(218, 165, 32, 0.06) 2px,
+    rgba(218, 165, 32, 0.06) 3px
   );
   animation: vinylSpin 4s linear infinite reverse;
 }
@@ -40,8 +42,20 @@
   height: 40%;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #3ef3ff, #0a2a33);
-  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.5);
+  /* Metallic gold — same family as tls-gold-heading */
+  background: radial-gradient(
+    circle at 32% 28%,
+    #fffef5 0%,
+    #f5e6b8 18%,
+    #daa520 42%,
+    #b8860b 62%,
+    #6b4e0a 88%,
+    #2a1f06 100%
+  );
+  box-shadow:
+    inset 0 0 10px rgba(40, 28, 6, 0.55),
+    inset 0 0 0 1px rgba(255, 248, 220, 0.35),
+    0 0 12px rgba(212, 168, 75, 0.35);
 }
 
 .hole {
