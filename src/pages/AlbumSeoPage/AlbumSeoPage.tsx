@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { albums } from "../../features/discography/discographyData";
+import { absolutePublicUrl } from "../../seo/seoDefaults";
 import { setSeoHead } from "../../seo/setSeoHead";
 import { SITE_ORIGIN } from "../../seo/siteOrigin";
 import styles from "./AlbumSeoPage.module.css";
@@ -20,6 +21,8 @@ export const AlbumSeoPage: React.FC = () => {
       title: `${album.title} — The Lost Symbols`,
       description: desc,
       canonicalPath: path,
+      ogImage: absolutePublicUrl(album.coverUrl),
+      ogType: "music.album",
       jsonLd: {
         "@context": "https://schema.org",
         "@type": "MusicAlbum",

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FluidBackground } from "../../components/FluidBackground/FluidBackground";
+import { absolutePublicUrl } from "../../seo/seoDefaults";
 import { setSeoHead } from "../../seo/setSeoHead";
 import { SITE_ORIGIN } from "../../seo/siteOrigin";
 import { ArtistCollaborationsSection } from "../../features/score-portfolio/ArtistCollaborationsSection";
@@ -20,6 +21,9 @@ export const ScorePage: React.FC = () => {
       title: "The Lost Symbols Score — Film songs & background score",
       description: desc,
       canonicalPath: "/score",
+      ogImage: absolutePublicUrl("/services.png"),
+      keywords:
+        "The Lost Symbols Score, film score India, background score, playback, Jaipur composer",
       jsonLd: {
         "@context": "https://schema.org",
         "@type": "WebPage",

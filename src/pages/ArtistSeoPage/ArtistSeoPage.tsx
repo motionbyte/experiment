@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { FEATURED_ARTISTS } from "../../features/score-portfolio/featuredArtistsData";
+import { absolutePublicUrl } from "../../seo/seoDefaults";
 import { setSeoHead } from "../../seo/setSeoHead";
 import { SITE_ORIGIN } from "../../seo/siteOrigin";
 import styles from "../AlbumSeoPage/AlbumSeoPage.module.css";
@@ -35,6 +36,10 @@ export const ArtistSeoPage: React.FC = () => {
       title: `${artist.name} & The Lost Symbols — Film score collaborations`,
       description: desc,
       canonicalPath: path,
+      ...(artist.imageUrl
+        ? { ogImage: absolutePublicUrl(artist.imageUrl) }
+        : {}),
+      ogType: "profile",
       jsonLd,
     });
   }, [artist]);

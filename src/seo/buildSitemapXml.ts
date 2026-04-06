@@ -3,6 +3,9 @@ import { bandMembers } from "../features/band-members/bandMembersData";
 import { FEATURED_ARTISTS } from "../features/score-portfolio/featuredArtistsData";
 import { SITE_ORIGIN } from "./siteOrigin";
 
+/** Build date for `<lastmod>` (ISO date, UTC). */
+const SITEMAP_LASTMOD = new Date().toISOString().slice(0, 10);
+
 const SECTION_PATHS: { path: string; changefreq: string; priority: string }[] = [
   { path: "/discography", changefreq: "weekly", priority: "0.95" },
   { path: "/biography", changefreq: "monthly", priority: "0.9" },
@@ -18,6 +21,7 @@ const SECTION_PATHS: { path: string; changefreq: string; priority: string }[] = 
 function urlEntry(loc: string, changefreq: string, priority: string): string {
   return `  <url>
     <loc>${loc}</loc>
+    <lastmod>${SITEMAP_LASTMOD}</lastmod>
     <changefreq>${changefreq}</changefreq>
     <priority>${priority}</priority>
   </url>`;
@@ -50,7 +54,7 @@ export function buildSitemapXml(): string {
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<!-- Auto-generated at build from discography, featured artists, and band members -->
+<!-- Auto-generated at build: sections, /score, albums, artists, members; lastmod=${SITEMAP_LASTMOD} -->
 ${lines.join("\n")}
 </urlset>
 `;

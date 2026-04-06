@@ -1,4 +1,4 @@
-# Sitemap: https://thelostsymbols.in (must match Search Console property: https, domain).
+# https://thelostsymbols.in — allow indexing; sitemap for Search Console / Bing.
 User-agent: *
 Allow: /
 

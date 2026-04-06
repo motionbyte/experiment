@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { bandMembers } from "../../features/band-members/bandMembersData";
+import { absolutePublicUrl } from "../../seo/seoDefaults";
 import { setSeoHead } from "../../seo/setSeoHead";
 import { SITE_ORIGIN } from "../../seo/siteOrigin";
 import styles from "../AlbumSeoPage/AlbumSeoPage.module.css";
@@ -37,6 +38,8 @@ export const BandMemberSeoPage: React.FC = () => {
       title: `${member.name} — ${member.role} | The Lost Symbols`,
       description: desc.slice(0, 300),
       canonicalPath: path,
+      ogImage: absolutePublicUrl(member.photoUrl),
+      ogType: "profile",
       jsonLd,
     });
   }, [member]);
