@@ -33,6 +33,11 @@ const VideosSection = lazy(() =>
     default: m.VideosSection,
   }))
 );
+const PressReleasesSection = lazy(() =>
+  import("../../features/press-releases/PressReleasesSection/PressReleasesSection").then(
+    (m) => ({ default: m.PressReleasesSection })
+  )
+);
 const ConnectWithUsSection = lazy(() =>
   import("../../features/connect-with-us/ConnectWithUsSection/ConnectWithUsSection").then((m) => ({
     default: m.ConnectWithUsSection,
@@ -96,6 +101,9 @@ export const HomePage: React.FC<HomePageProps> = ({ scrollTarget }) => {
       </Suspense>
       <Suspense fallback={<SectionFallback />}>
         <VideosSection />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <PressReleasesSection />
       </Suspense>
       <Suspense fallback={<SectionFallback />}>
         <ConnectWithUsSection />

@@ -1,0 +1,58 @@
+.section {
+  padding-top: clamp(2.5rem, 5vw, 3.5rem);
+  padding-bottom: 80px;
+  padding-left: max(var(--section-pad-inline), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--section-pad-inline), env(safe-area-inset-right, 0px));
+  pointer-events: none;
+  position: relative;
+  overflow: visible;
+}
+
+.inner {
+  pointer-events: auto;
+  max-width: 52rem;
+  margin: 0 auto;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.heading {
+  margin: 0;
+  font-size: clamp(2.5rem, 10vw, 4.5rem);
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.heading :global(.tls-gold-heading) {
+  letter-spacing: 0.2em;
+  font-weight: 800;
+  font-size: inherit;
+}
+
+.tagline {
+  text-align: center;
+  margin: 0 auto 36px;
+  max-width: 42rem;
+  padding: 0 0.5rem;
+  font-size: clamp(0.9rem, 2.8vw, 1rem);
+  line-height: 1.45;
+}
+
+.tagline :global(.tls-gold-year) {
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  font-size: inherit;
+}
+
+.placeholder {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(0.92rem, 2.4vw, 1rem);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.55);
+}

@@ -11,8 +11,12 @@ export const SisterVenturesSection: React.FC = () => {
     >
       <div className={styles.divider} aria-hidden="true" />
 
-      <p className={styles.kicker}>Also from us</p>
-      <h2 className={styles.heading}>Our other ventures</h2>
+      <p className={styles.kicker}>
+        <span className="tls-gold-year">Also from us</span>
+      </p>
+      <h2 className={styles.heading}>
+        <span className="tls-gold-heading">Our other ventures</span>
+      </h2>
 
       <div className={styles.grid}>
         <a
@@ -22,13 +26,17 @@ export const SisterVenturesSection: React.FC = () => {
           className={styles.card}
           aria-label="The Lost Symbols Score — opens commercial film and background score site in a new tab"
         >
-          <span className={styles.cardTag}>Film score</span>
-          <span className={styles.cardTitle}>The Lost Symbols Score</span>
+          <span className={styles.cardTag}>
+            <span className="tls-gold-year">Film score</span>
+          </span>
+          <span className={styles.cardTitle}>
+            <span className="tls-gold-heading">The Lost Symbols Score</span>
+          </span>
           <span className={styles.cardBlurb}>
-            Commercial films — songs &amp; background score
+            <span className="tls-gold-year">Commercial films — songs &amp; background score</span>
           </span>
           <span className={styles.cardHint}>
-            Visit site
+            <span className="tls-gold-year">Visit site</span>
             <span className={styles.externalGlyph} aria-hidden="true">
               ↗
             </span>
@@ -42,11 +50,17 @@ export const SisterVenturesSection: React.FC = () => {
           className={styles.card}
           aria-label="The Lost Verse — opens film banner site in a new tab"
         >
-          <span className={styles.cardTag}>Film banner</span>
-          <span className={styles.cardTitle}>The Lost Verse</span>
-          <span className={styles.cardBlurb}>Our film banner</span>
+          <span className={styles.cardTag}>
+            <span className="tls-gold-year">Film banner</span>
+          </span>
+          <span className={styles.cardTitle}>
+            <span className="tls-gold-heading">The Lost Verse</span>
+          </span>
+          <span className={styles.cardBlurb}>
+            <span className="tls-gold-year">Our film banner</span>
+          </span>
           <span className={styles.cardHint}>
-            Visit site
+            <span className="tls-gold-year">Visit site</span>
             <span className={styles.externalGlyph} aria-hidden="true">
               ↗
             </span>

@@ -40,20 +40,26 @@
   margin-bottom: 2rem;
 }
 
+/* Gold fill lives on inner spans — see index.css .tls-gold-heading / .tls-gold-year */
 .title {
   margin: 0 0 0.5rem;
   font-size: clamp(1.75rem, 5vw, 2.25rem);
-  font-weight: 800;
-  color: var(--text-h);
-  letter-spacing: 0.02em;
   line-height: 1.2;
+  font-weight: 400;
 }
 
 .meta {
   margin: 0;
   font-size: 1.05rem;
+  line-height: 1.35;
   color: var(--text);
   opacity: 0.95;
+}
+
+.albumYear {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.35;
 }
 
 .tracksHeading {

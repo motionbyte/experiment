@@ -20,17 +20,41 @@
   border-radius: 16px;
   max-width: 480px;
   width: 100%;
-  max-height: 85vh;
+  max-height: min(85vh, 880px);
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   box-shadow: var(--shadow);
   position: relative;
+  z-index: 0;
   animation: tls-modal-dialog-in var(--tls-modal-panel-dur) var(--tls-modal-ease-spring) both;
   animation-delay: 0.06s;
-  transition: max-width 0.28s var(--tls-modal-ease-out);
 }
 
 .modalWide {
-  max-width: 960px;
+  max-width: min(920px, 100%);
+}
+
+.modalScroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Lyrics open: lock outer scroll; header + split body manage inner scrolling */
+.modalScrollSplit {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.modalScrollSplit .header {
+  flex-shrink: 0;
 }
 
 .closeBtn {
@@ -75,36 +99,141 @@
   min-width: 0;
 }
 
+/* Cinzel + metallic gold — scoped here so modal panel cascade can’t strip global utilities */
 .title {
   margin: 0 0 4px;
   font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--text-h);
+  line-height: 1.2;
+  font-weight: 400;
+  color: inherit;
 }
 
 .year {
   margin: 0;
   font-size: 0.9rem;
-  color: var(--text);
-  opacity: 0.9;
+  line-height: 1.35;
+  color: inherit;
+}
+
+.goldHeading {
+  display: inline-block;
+  max-width: 100%;
+  font-family: "Cinzel", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-size: inherit;
+  line-height: inherit;
+  background-image: linear-gradient(
+    165deg,
+    #5c4208 0%,
+    #9a7309 12%,
+    #c9a227 26%,
+    #f5e6b8 40%,
+    #ffd700 48%,
+    #fffef5 52%,
+    #daa520 60%,
+    #b8860b 74%,
+    #6b4e0a 90%,
+    #2a1f06 100%
+  );
+  background-size: 150% 150%;
+  background-position: 38% 42%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  animation: albumModalGoldShine 5.5s ease-in-out infinite;
+}
+
+.goldYear {
+  display: inline-block;
+  font-family: "Cinzel", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  font-size: inherit;
+  line-height: inherit;
+  background-image: linear-gradient(
+    165deg,
+    #5c4208 0%,
+    #9a7309 12%,
+    #c9a227 26%,
+    #f5e6b8 40%,
+    #ffd700 48%,
+    #fffef5 52%,
+    #daa520 60%,
+    #b8860b 74%,
+    #6b4e0a 90%,
+    #2a1f06 100%
+  );
+  background-size: 150% 150%;
+  background-position: 40% 44%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  animation: albumModalGoldShine 5.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .goldHeading,
+  .goldYear {
+    animation: none;
+    background-position: center;
+  }
+}
+
+@keyframes albumModalGoldShine {
+  0%,
+  100% {
+    background-position: 32% 38%;
+  }
+  50% {
+    background-position: 72% 55%;
+  }
 }
 
 .body {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr);
-  gap: 24px;
   padding: 8px 24px 24px;
-  max-height: 60vh;
 }
 
-.bodySingle {
-  grid-template-columns: minmax(0, 1fr);
+.bodyWithLyrics {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: stretch;
+  padding: 8px 24px 24px;
+  position: relative;
 }
 
 .tracksPane {
   min-width: 0;
+}
+
+.bodyWithLyrics .tracksPane {
   overflow-y: auto;
-  padding-right: 4px;
+  min-height: 0;
+  max-height: min(56vh, 500px);
+}
+
+/* Desktop: lyrics column on the right */
+.lyricsPane {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: min(56vh, 500px);
+  overflow: hidden;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Desktop: outer wrapper is layout-transparent so grid still sees .lyricsPane */
+@media (min-width: 901px) {
+  .lyricsPaneOuter {
+    display: contents;
+  }
 }
 
 .tracksTitle {
@@ -173,6 +302,13 @@
   margin-bottom: 0;
 }
 
+.trackRowEnd {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
 .lyricsBtn {
   font-size: 12px;
   padding: 4px 10px;
@@ -185,6 +321,23 @@
 }
 
 .lyricsBtn:hover {
+  background: var(--accent-bg);
+  border-color: var(--accent);
+}
+
+.tabsBtn {
+  font-size: 12px;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--accent);
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.tabsBtn:hover {
   background: var(--accent-bg);
   border-color: var(--accent);
 }
@@ -203,99 +356,85 @@
   pointer-events: none;
 }
 
-.lyricsPane {
-  min-width: 0;
-  border-radius: 12px;
-  background: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 12px 14px;
-  display: flex;
-  flex-direction: column;
-  max-height: 100%;
-  opacity: 0;
-  transform: translateY(8px);
-  animation: lyricsFadeIn 0.22s ease-out forwards;
-}
-
 .lyricsHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 8px;
+  padding: 12px 14px 10px;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .lyricsTrackTitle {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--text-h);
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: rgba(255, 250, 245, 0.96);
+  line-height: 1.25;
 }
 
-.lyricsHideBtn {
-  font-size: 11px;
-  padding: 4px 10px;
+.lyricsCloseBtn {
+  flex-shrink: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 0.45rem 0.9rem;
   border-radius: 999px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text);
+  border: 1px solid rgba(212, 168, 75, 0.35);
+  background: rgba(212, 168, 75, 0.1);
+  color: rgba(255, 230, 190, 0.95);
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s;
 }
 
-.lyricsHideBtn:hover {
-  background: var(--accent-bg);
-  border-color: var(--accent);
+.lyricsCloseBtn:hover {
+  background: rgba(212, 168, 75, 0.2);
+  border-color: rgba(212, 168, 75, 0.55);
+}
+
+.lyricsScroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 14px 14px;
 }
 
 .lyrics {
   margin: 0;
-  padding: 8px 0 0;
+  padding: 4px 0 0;
   font-size: 13px;
-  line-height: 1.5;
-  color: var(--text);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.82);
   white-space: pre-wrap;
   word-break: break-word;
-  overflow-y: auto;
-  opacity: 0;
-  transform: translateY(4px);
-  animation: lyricsTextFadeIn 0.24s ease-out forwards;
 }
 
 .lyricsPlaceholder,
 .lyricsEmpty {
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.55);
+  padding: 8px 0;
 }
 
 .lyricsPlaceholder {
   margin-top: 4px;
 }
 
-@keyframes lyricsFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes lyricsTextFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 @media (max-width: 900px) {
   .modal {
     max-width: 100%;
+    max-height: min(92vh, 920px);
+  }
+
+  /* Lyrics open: one scroll for header + tracks + lyrics (override split overflow lock) */
+  .modalScrollSplit {
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   .header {
@@ -305,17 +444,211 @@
   }
 
   .body {
-    grid-template-columns: minmax(0, 1fr);
-    max-height: none;
-    padding: 8px max(16px, env(safe-area-inset-left, 0px)) max(20px, env(safe-area-inset-bottom, 0px))
+    padding: 8px max(16px, env(safe-area-inset-left, 0px)) max(12px, env(safe-area-inset-bottom, 0px))
       max(16px, env(safe-area-inset-right, 0px));
   }
 
-  .tracksPane {
-    max-height: 40vh;
+  /* Tracks above, lyrics below — full block height; no nested scroll areas */
+  .bodyWithLyrics {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 auto;
+    min-height: 0;
+    gap: 16px;
+    padding: 8px max(16px, env(safe-area-inset-left, 0px)) max(12px, env(safe-area-inset-bottom, 0px))
+      max(16px, env(safe-area-inset-right, 0px));
+    position: relative;
   }
 
-  .lyricsPane {
-    margin-top: 12px;
+  .bodyWithLyrics .tracksPane {
+    flex: 0 0 auto;
+    min-width: 0;
+    max-height: none;
+    overflow: visible;
+    padding-bottom: 0;
   }
+
+  .lyricsPaneOuter {
+    flex: 0 0 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .lyricsPaneOuter .lyricsPane {
+    flex: 0 0 auto;
+    width: 100%;
+    max-height: none;
+    min-height: 0;
+    overflow: visible;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.42);
+    box-shadow: none;
+  }
+
+  .lyricsPaneOuter .lyricsScroll {
+    flex: 0 0 auto;
+    min-height: 0;
+    overflow: visible;
+    overscroll-behavior: auto;
+  }
+
+  .lyricsScroll {
+    padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (min-width: 901px) {
+  .bodyWithLyrics .tracksPane {
+    padding-right: 4px;
+  }
+}
+
+/* Nested dialog: instrument selection for Tabs */
+.instrumentPickerBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(16px, env(safe-area-inset-top, 0px))
+    max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px))
+    max(16px, env(safe-area-inset-left, 0px));
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+}
+
+.instrumentPicker {
+  width: 100%;
+  max-width: 400px;
+  max-height: min(85vh, 560px);
+  overflow-y: auto;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 18px 16px;
+  box-shadow: var(--shadow);
+}
+
+.instrumentPickerTitle {
+  margin: 0 0 16px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--text-h);
+  line-height: 1.35;
+}
+
+.instrumentPickerList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.instrumentPickerItem {
+  margin: 0;
+}
+
+.instrumentPickerOption {
+  width: 100%;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.instrumentPickerOption:hover {
+  background: var(--accent-bg);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.instrumentPickerCancel {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  padding: 10px 14px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.instrumentPickerCancel:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.comingSoonBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(16px, env(safe-area-inset-top, 0px))
+    max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px))
+    max(16px, env(safe-area-inset-left, 0px));
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+}
+
+.comingSoonDialog {
+  width: 100%;
+  max-width: 340px;
+  text-align: center;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 20px 20px;
+  box-shadow: var(--shadow);
+}
+
+.comingSoonTitle {
+  margin: 0 0 10px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-h);
+  letter-spacing: 0.02em;
+}
+
+.comingSoonText {
+  margin: 0 0 20px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.comingSoonOk {
+  min-width: 120px;
+  padding: 10px 22px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  background: var(--accent-bg);
+  color: var(--accent);
+  cursor: pointer;
+  transition: background 0.2s, filter 0.2s;
+}
+
+.comingSoonOk:hover {
+  filter: brightness(1.08);
 }

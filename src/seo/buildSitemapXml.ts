@@ -10,6 +10,7 @@ const SECTION_PATHS: { path: string; changefreq: string; priority: string }[] = 
   { path: "/band", changefreq: "monthly", priority: "0.9" },
   { path: "/photos", changefreq: "weekly", priority: "0.85" },
   { path: "/videos", changefreq: "weekly", priority: "0.85" },
+  { path: "/press-releases", changefreq: "monthly", priority: "0.8" },
   { path: "/contact", changefreq: "monthly", priority: "0.85" },
   { path: "/ventures", changefreq: "monthly", priority: "0.8" },
 ];

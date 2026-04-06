@@ -73,15 +73,23 @@
 .name {
   margin: 0 0 4px;
   font-size: 1.5rem;
+}
+
+.name :global(.tls-gold-heading) {
   font-weight: 700;
-  color: var(--text-h);
+  font-size: inherit;
+  letter-spacing: 0.03em;
 }
 
 .role {
   margin: 0;
   font-size: 0.95rem;
-  color: var(--text);
-  opacity: 0.9;
+}
+
+.role :global(.tls-gold-year) {
+  font-weight: 600;
+  font-size: inherit;
+  letter-spacing: 0.05em;
 }
 
 .story {

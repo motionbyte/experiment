@@ -10,6 +10,7 @@ const SECTION_IDS = new Set([
   "band",
   "photos",
   "videos",
+  "press-releases",
   "contact",
   "ventures",
 ]);

@@ -1,0 +1,47 @@
+/**
+ * Score page — artist names: Cinzel + metallic gold (aligned with page gold accents)
+ */
+.goldName {
+  font-family: "Cinzel", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font-weight: 600;
+  font-variant-numeric: lining-nums;
+  letter-spacing: 0.12em;
+  text-transform: none;
+  background-image: linear-gradient(
+    165deg,
+    #5c4208 0%,
+    #9a7309 12%,
+    #c9a227 26%,
+    #f5e6b8 40%,
+    #ffd700 48%,
+    #fffef5 52%,
+    #daa520 60%,
+    #b8860b 74%,
+    #6b4e0a 90%,
+    #2a1f06 100%
+  );
+  background-size: 140% 140%;
+  background-position: 35% 45%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  /* Beat modal .title colour / weight when both classes apply */
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  font-weight: 600 !important;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.75))
+    drop-shadow(0 2px 10px rgba(0, 0, 0, 0.45)) drop-shadow(0 0 18px rgba(212, 168, 75, 0.22));
+}
+
+/* Slightly larger when replacing modal .kicker (artist line above track title) */
+.goldNameKicker {
+  composes: goldName;
+  font-size: 1.64rem;
+  letter-spacing: 0.16em;
+}
+
+/* Artist tracks modal — main heading (was 1.35rem via .title; 2× for name) */
+.goldNameModalTitle {
+  composes: goldName;
+  font-size: 2.7rem !important;
+  line-height: 1.12;
+}

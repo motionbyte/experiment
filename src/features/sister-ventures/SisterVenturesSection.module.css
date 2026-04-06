@@ -28,18 +28,25 @@
 .kicker {
   margin: 0 0 0.35rem;
   font-size: 0.72rem;
+  text-transform: uppercase;
+}
+
+.kicker :global(.tls-gold-year) {
   font-weight: 700;
   letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: rgba(212, 180, 120, 0.85);
+  font-size: inherit;
 }
 
 .heading {
   margin: 0 0 clamp(1.25rem, 3vw, 1.75rem);
   font-size: clamp(1.15rem, 2.8vw, 1.4rem);
+  line-height: 1.3;
+}
+
+.heading :global(.tls-gold-heading) {
   font-weight: 600;
   letter-spacing: 0.06em;
-  color: rgba(255, 255, 255, 0.72);
+  font-size: inherit;
 }
 
 .grid {
@@ -96,25 +103,36 @@
 
 .cardTag {
   font-size: 0.65rem;
+  text-transform: uppercase;
+}
+
+.cardTag :global(.tls-gold-year) {
   font-weight: 700;
   letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(212, 180, 120, 0.9);
+  font-size: inherit;
 }
 
 .cardTitle {
   font-size: clamp(1.15rem, 2.8vw, 1.35rem);
+  line-height: 1.25;
+}
+
+.cardTitle :global(.tls-gold-heading) {
   font-weight: 800;
   letter-spacing: 0.04em;
-  color: var(--text-h);
-  line-height: 1.25;
+  font-size: inherit;
 }
 
 .cardBlurb {
   font-size: 0.92rem;
   line-height: 1.45;
-  color: rgba(255, 255, 255, 0.68);
   flex: 1;
+}
+
+.cardBlurb :global(.tls-gold-year) {
+  font-weight: 500;
+  font-size: inherit;
+  letter-spacing: 0.03em;
 }
 
 .cardHint {
@@ -123,10 +141,13 @@
   gap: 0.4rem;
   margin-top: 0.25rem;
   font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.cardHint :global(.tls-gold-year) {
   font-weight: 600;
   letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(212, 180, 120, 0.95);
+  font-size: inherit;
 }
 
 .externalGlyph {

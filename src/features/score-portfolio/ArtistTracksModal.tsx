@@ -1,6 +1,7 @@
 import React from "react";
 import type { ArtistTrack, FeaturedArtistEntry } from "./featuredArtistsData";
 import styles from "./ArtistCollaborationModals.module.css";
+import scoreArtistName from "./scoreArtistName.module.css";
 
 type Props = {
   artist: FeaturedArtistEntry;
@@ -26,7 +27,10 @@ export const ArtistTracksModal: React.FC<Props> = ({ artist, onClose, onPickTrac
         <div className={styles.scroll}>
           <div className={styles.header}>
             <p className={styles.kicker}>Featured artist</p>
-            <h2 id="artist-tracks-title" className={styles.title}>
+            <h2
+              id="artist-tracks-title"
+              className={`${styles.title} ${scoreArtistName.goldNameModalTitle}`}
+            >
               {artist.name}
             </h2>
             {artist.bio && (

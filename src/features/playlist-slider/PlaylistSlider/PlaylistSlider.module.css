@@ -57,14 +57,18 @@
 
 .item {
   font-size: clamp(1.1rem, 2.5vw, 1.35rem);
-  font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-h);
   white-space: nowrap;
   padding: 0 1.2em;
-  opacity: 0.9;
+  opacity: 0.95;
   border-right: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.item :global(.tls-gold-heading) {
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  font-size: inherit;
 }
 
 .ticker .item:last-child {
@@ -72,9 +76,11 @@
 }
 
 .link:hover .item {
-  color: var(--accent);
   opacity: 1;
-  text-shadow: 0 0 20px rgba(62, 243, 255, 0.3);
+}
+
+.link:hover .item :global(.tls-gold-heading) {
+  filter: brightness(1.12);
 }
 
 @keyframes scroll {

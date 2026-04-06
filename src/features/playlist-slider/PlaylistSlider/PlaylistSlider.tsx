@@ -27,14 +27,14 @@ export const PlaylistSlider: React.FC = () => {
           <div className={styles.ticker}>
             {TICKER_ITEMS.map((label, i) => (
               <span key={i} className={styles.item}>
-                {label}
+                <span className="tls-gold-heading">{label}</span>
               </span>
             ))}
           </div>
           <div className={styles.ticker} aria-hidden>
             {TICKER_ITEMS.map((label, i) => (
               <span key={`dup-${i}`} className={styles.item}>
-                {label}
+                <span className="tls-gold-heading">{label}</span>
               </span>
             ))}
           </div>

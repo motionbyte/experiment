@@ -59,8 +59,14 @@ export const AlbumSeoPage: React.FC = () => {
       </nav>
 
       <header className={styles.header}>
-        <h1 className={styles.title}>{album.title}</h1>
-        <p className={styles.meta}>Year: {album.year}</p>
+        <h1 className={styles.title}>
+          <span className="tls-gold-heading">{album.title}</span>
+        </h1>
+        <p className={styles.albumYear}>
+          <span className="tls-gold-year">
+            Year: {album.year}
+          </span>
+        </p>
       </header>
 
       <section aria-labelledby="tracks-heading">

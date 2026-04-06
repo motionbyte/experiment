@@ -17,25 +17,39 @@
 .copyright {
   margin: 0 0 8px;
   font-size: 0.9rem;
-  color: var(--text-h);
+}
+
+.copyright :global(.tls-gold-heading) {
+  font-weight: 600;
   letter-spacing: 0.05em;
+  font-size: inherit;
 }
 
 .credit {
   margin: 0;
   font-size: 0.85rem;
-  color: var(--text);
+}
+
+.credit :global(.tls-gold-year) {
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  font-size: inherit;
 }
 
 .link {
-  color: var(--accent);
   text-decoration: none;
-  transition: color 0.2s, text-shadow 0.2s;
+  transition: filter 0.2s;
+}
+
+.link :global(.tls-gold-heading) {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-size: 2em;
+  line-height: 1.2;
 }
 
 .link:hover {
-  color: var(--text-h);
-  text-shadow: 0 0 12px rgba(62, 243, 255, 0.4);
+  filter: brightness(1.12);
 }
 
 .link:focus-visible {

@@ -64,7 +64,9 @@ export const ArtistSeoPage: React.FC = () => {
       </nav>
 
       <header className={styles.header}>
-        <h1 className={styles.title}>{artist.name}</h1>
+        <h1 className={styles.title}>
+          <span className="tls-gold-heading">{artist.name}</span>
+        </h1>
         <p className={styles.meta}>Film score collaborations with The Lost Symbols</p>
       </header>
 

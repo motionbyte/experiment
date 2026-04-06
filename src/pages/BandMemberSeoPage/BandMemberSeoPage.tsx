@@ -64,7 +64,9 @@ export const BandMemberSeoPage: React.FC = () => {
       </nav>
 
       <header className={styles.header}>
-        <h1 className={styles.title}>{member.name}</h1>
+        <h1 className={styles.title}>
+          <span className="tls-gold-heading">{member.name}</span>
+        </h1>
         <p className={styles.meta}>{member.role}</p>
       </header>
 

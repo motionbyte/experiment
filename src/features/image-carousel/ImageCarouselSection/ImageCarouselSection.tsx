@@ -26,6 +26,8 @@ export const ImageCarouselSection: React.FC = () => {
   const startRotation = useRef(0);
   const slideIndexAtStart = useRef<number | null>(null);
   const didDrag = useRef(false);
+  /** Without this, hover moves fire pointermove with startX=0 and falsely trigger a drag */
+  const pointerActive = useRef(false);
   const rafId = useRef<number | null>(null);
   const lastTime = useRef(0);
   const idleTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -35,6 +37,7 @@ export const ImageCarouselSection: React.FC = () => {
 
   const handleStart = useCallback(
     (e: React.PointerEvent | React.TouchEvent) => {
+      pointerActive.current = true;
       const clientX = getClientX(e);
       if ("pointerId" in e && e.target instanceof HTMLElement) {
         (e.target as HTMLElement).setPointerCapture((e as React.PointerEvent).pointerId);
@@ -59,6 +62,7 @@ export const ImageCarouselSection: React.FC = () => {
 
   const handleMove = useCallback(
     (e: React.PointerEvent | React.TouchEvent) => {
+      if (!pointerActive.current) return;
       const clientX = getClientX(e);
       const delta = clientX - startX.current;
       if (!didDrag.current && Math.abs(delta) > DRAG_THRESHOLD_PX) {
@@ -75,11 +79,17 @@ export const ImageCarouselSection: React.FC = () => {
   );
 
   const handleEnd = useCallback(() => {
+    pointerActive.current = false;
     if (!didDrag.current && slideIndexAtStart.current != null && slideIndexAtStart.current >= 0) {
       setOpenedImage(carouselImages[slideIndexAtStart.current] ?? null);
     }
     slideIndexAtStart.current = null;
+    didDrag.current = false;
     setIsDragging(false);
+    if (idleTimeout.current) {
+      clearTimeout(idleTimeout.current);
+      idleTimeout.current = null;
+    }
     idleTimeout.current = setTimeout(() => {
       setAutoRotate(true);
       idleTimeout.current = null;
@@ -130,7 +140,6 @@ export const ImageCarouselSection: React.FC = () => {
         onPointerDown={handleStart}
         onPointerMove={handleMove}
         onPointerUp={handleEnd}
-        onPointerLeave={handleEnd}
         onPointerCancel={handleEnd}
         onTouchStart={handleStart}
         onTouchMove={handleMove}

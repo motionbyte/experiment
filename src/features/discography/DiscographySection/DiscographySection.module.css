@@ -24,13 +24,57 @@
 
 .heading {
   margin: 0;
+  font-family: "Cinzel", "Palatino Linotype", "Book Antiqua", Palatino, serif;
   font-size: clamp(2.5rem, 10vw, 4.5rem);
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.2em;
-  color: var(--text-h);
   text-transform: uppercase;
-  text-shadow: 0 0 40px rgba(62, 243, 255, 0.25);
   line-height: 1.1;
+  /* Metallic gold (same palette as Score artist names) */
+  background-image: linear-gradient(
+    165deg,
+    #5c4208 0%,
+    #9a7309 12%,
+    #c9a227 26%,
+    #f5e6b8 40%,
+    #ffd700 48%,
+    #fffef5 52%,
+    #daa520 60%,
+    #b8860b 74%,
+    #6b4e0a 90%,
+    #2a1f06 100%
+  );
+  background-size: 150% 150%;
+  background-position: 38% 42%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.65))
+    drop-shadow(0 4px 20px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 32px rgba(212, 168, 75, 0.28))
+    drop-shadow(0 0 56px rgba(255, 200, 90, 0.12));
+  animation: discographyGoldShine 5.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heading,
+  .albumTitleInner,
+  .albumYearInner {
+    animation: none;
+    background-position: center;
+  }
+}
+
+/* Sweep highlight on gradient only — avoids animating filter on huge glyphs */
+@keyframes discographyGoldShine {
+  0%,
+  100% {
+    background-position: 32% 38%;
+  }
+  50% {
+    background-position: 72% 55%;
+  }
 }
 
 .timeline {
@@ -153,19 +197,76 @@
 
 .albumTitle {
   font-size: clamp(1.75rem, 4vw, 2.5rem);
-  font-weight: 700;
-  color: var(--text-h);
-  letter-spacing: 0.02em;
   line-height: 1.2;
   white-space: nowrap;
+  font-weight: 400;
+}
+
+/* Inner span: Cinzel + gold (same palette as modal / section heading) */
+.albumTitleInner {
+  display: inline-block;
+  max-width: 100%;
+  font-family: "Cinzel", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-size: inherit;
+  line-height: inherit;
+  background-image: linear-gradient(
+    165deg,
+    #5c4208 0%,
+    #9a7309 12%,
+    #c9a227 26%,
+    #f5e6b8 40%,
+    #ffd700 48%,
+    #fffef5 52%,
+    #daa520 60%,
+    #b8860b 74%,
+    #6b4e0a 90%,
+    #2a1f06 100%
+  );
+  background-size: 150% 150%;
+  background-position: 38% 42%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  animation: discographyGoldShine 5.5s ease-in-out infinite;
 }
 
 .albumYear {
   font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-  font-weight: 600;
-  color: var(--text);
-  opacity: 0.95;
+  line-height: 1.35;
   white-space: nowrap;
+  font-weight: 400;
+}
+
+.albumYearInner {
+  display: inline-block;
+  font-family: "Cinzel", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  font-size: inherit;
+  line-height: inherit;
+  background-image: linear-gradient(
+    165deg,
+    #5c4208 0%,
+    #9a7309 12%,
+    #c9a227 26%,
+    #f5e6b8 40%,
+    #ffd700 48%,
+    #fffef5 52%,
+    #daa520 60%,
+    #b8860b 74%,
+    #6b4e0a 90%,
+    #2a1f06 100%
+  );
+  background-size: 150% 150%;
+  background-position: 40% 44%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  animation: discographyGoldShine 5.5s ease-in-out infinite;
 }
 
 /* Touch: vinyl hamesha bahar — title/year ko overlap se bachane ke liye gap + shift */

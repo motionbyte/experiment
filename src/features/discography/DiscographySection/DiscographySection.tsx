@@ -173,8 +173,12 @@ export const DiscographySection: React.FC = () => {
                     paletteIndex={index}
                   />
                   <div className={styles.info}>
-                    <span className={styles.albumTitle}>{album.title}</span>
-                    <span className={styles.albumYear}>Year: {album.year}</span>
+                    <span className={styles.albumTitle}>
+                      <span className={styles.albumTitleInner}>{album.title}</span>
+                    </span>
+                    <span className={styles.albumYear}>
+                      <span className={styles.albumYearInner}>Year: {album.year}</span>
+                    </span>
                   </div>
                 </button>
               </li>

@@ -35,8 +35,12 @@ export const MemberModal: React.FC<Props> = ({ member, onClose }) => {
             fetchPriority="high"
           />
           <div className={styles.meta}>
-            <h2 className={styles.name}>{member.name}</h2>
-            <p className={styles.role}>{member.role}</p>
+            <h2 className={styles.name}>
+              <span className="tls-gold-heading">{member.name}</span>
+            </h2>
+            <p className={styles.role}>
+              <span className="tls-gold-year">{member.role}</span>
+            </p>
           </div>
         </header>
 

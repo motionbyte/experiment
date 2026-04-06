@@ -59,6 +59,11 @@ const SECTION_COPY: Record<
     description:
       "Official music videos and visual work from The Lost Symbols — subscribe on YouTube and follow on social platforms.",
   },
+  "press-releases": {
+    title: "Press releases — The Lost Symbols",
+    description:
+      "Press coverage, media announcements, and news about The Lost Symbols — alternative rock from Jaipur.",
+  },
   contact: {
     title: "Contact — The Lost Symbols",
     description:

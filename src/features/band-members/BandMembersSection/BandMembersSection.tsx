@@ -118,7 +118,9 @@ export const BandMembersSection: React.FC = () => {
         aria-label="Band members"
       >
         <div className={styles.titleRow}>
-          <h2 className={styles.heading}>BAND MEMBERS</h2>
+          <h2 className={styles.heading}>
+            <span className="tls-gold-heading">BAND MEMBERS</span>
+          </h2>
           <VinylSpinner size={52} className={styles.vinyl} />
         </div>
 
@@ -202,8 +204,12 @@ export const BandMembersSection: React.FC = () => {
                     />
                   </div>
                   <div className={styles.info}>
-                    <span className={styles.name}>{member.name}</span>
-                    <span className={styles.role}>{member.role}</span>
+                    <span className={styles.name}>
+                      <span className="tls-gold-heading">{member.name}</span>
+                    </span>
+                    <span className={styles.role}>
+                      <span className="tls-gold-year">{member.role}</span>
+                    </span>
                   </div>
                 </button>
               </li>

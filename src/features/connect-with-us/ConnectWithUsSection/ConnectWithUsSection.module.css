@@ -7,18 +7,22 @@
   pointer-events: none;
 }
 
-.section .link {
+.section .link,
+.section .brandLogoLink {
   pointer-events: auto;
 }
 
 .heading {
   margin: 0 0 12px;
   font-size: clamp(2rem, 8vw, 3.5rem);
-  font-weight: 800;
-  letter-spacing: 0.15em;
-  color: var(--text-h);
   text-transform: uppercase;
-  text-shadow: 0 0 40px rgba(62, 243, 255, 0.2);
+  line-height: 1.15;
+}
+
+.heading :global(.tls-gold-heading) {
+  letter-spacing: 0.15em;
+  font-weight: 800;
+  font-size: inherit;
 }
 
 .tagline {
@@ -27,8 +31,12 @@
   padding: 0 0.5rem;
   font-size: clamp(0.9rem, 2.8vw, 1rem);
   line-height: 1.45;
-  color: var(--text-m);
+}
+
+.tagline :global(.tls-gold-year) {
   letter-spacing: 0.1em;
+  font-weight: 600;
+  font-size: inherit;
 }
 
 .links {
@@ -37,6 +45,7 @@
   gap: 16px;
   justify-content: center;
   align-items: center;
+  padding-bottom: clamp(1.5rem, 4vw, 2.25rem);
 }
 
 .link {
@@ -49,12 +58,16 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 12px;
-  color: var(--text-h);
   text-decoration: none;
   font-size: 1rem;
-  letter-spacing: 0.05em;
   transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
   pointer-events: auto;
+}
+
+.link :global(.tls-gold-heading) {
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  font-size: inherit;
 }
 
 .link:hover {
@@ -68,6 +81,146 @@
   outline-offset: 2px;
 }
 
-.linkIcon {
-  font-size: 1.2rem;
+.linkIconGold {
+  --tls-contact-mask: none;
+  display: inline-block;
+  width: 1.2rem;
+  height: 1.2rem;
+  flex-shrink: 0;
+  background-image: linear-gradient(
+    165deg,
+    #5c4208 0%,
+    #9a7309 12%,
+    #c9a227 26%,
+    #f5e6b8 40%,
+    #ffd700 48%,
+    #fffef5 52%,
+    #daa520 60%,
+    #b8860b 74%,
+    #6b4e0a 90%,
+    #2a1f06 100%
+  );
+  background-size: 150% 150%;
+  background-position: 38% 42%;
+  -webkit-mask-image: var(--tls-contact-mask);
+  mask-image: var(--tls-contact-mask);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  animation: tls-gold-shine 5.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .linkIconGold {
+    animation: none;
+    background-position: center;
+  }
+}
+
+.socialBlock {
+  margin-top: clamp(2.5rem, 7vw, 4rem);
+  padding-top: clamp(1.25rem, 3.5vw, 2rem);
+}
+
+.socialHeading {
+  margin: 0 0 clamp(1rem, 3vw, 1.35rem);
+  font-size: clamp(1.35rem, 4.5vw, 1.85rem);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+}
+
+.socialHeading :global(.tls-gold-heading) {
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  font-size: inherit;
+}
+
+.brandLogos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(14px, 3vw, 22px);
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: auto;
+}
+
+.brandLogoItem {
+  margin: 0;
+  padding: 0;
+}
+
+.brandLogoLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.brandLogoLink:hover {
+  transform: scale(1.06);
+}
+
+.brandLogoLink:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Official logo shapes + same metallic gold treatment as .tls-gold-heading (index.css) */
+.brandLogoMark {
+  --tls-brand-mask: none;
+  display: block;
+  width: min(168px, 38vw);
+  height: clamp(36px, 8.5vw, 52px);
+  background-image: linear-gradient(
+    165deg,
+    #5c4208 0%,
+    #9a7309 12%,
+    #c9a227 26%,
+    #f5e6b8 40%,
+    #ffd700 48%,
+    #fffef5 52%,
+    #daa520 60%,
+    #b8860b 74%,
+    #6b4e0a 90%,
+    #2a1f06 100%
+  );
+  background-size: 150% 150%;
+  background-position: 38% 42%;
+  -webkit-mask-image: var(--tls-brand-mask);
+  mask-image: var(--tls-brand-mask);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  animation: tls-gold-shine 5.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brandLogoMark {
+    animation: none;
+    background-position: center;
+  }
+}
+
+@media (max-width: 520px) {
+  .brandLogos {
+    gap: 12px;
+  }
+
+  .brandLogoMark {
+    width: min(148px, 44vw);
+    height: clamp(32px, 10vw, 44px);
+  }
 }

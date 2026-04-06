@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import type { ArtistTrack } from "./featuredArtistsData";
 import styles from "./ArtistCollaborationModals.module.css";
+import scoreArtistName from "./scoreArtistName.module.css";
 import { youtubeIdFromUrl, youtubeThumbnailUrl } from "./youtubeUtils";
 
 type Props = {
@@ -43,7 +44,7 @@ export const ArtistTrackDetailModal: React.FC<Props> = ({
         </button>
         <div className={styles.sheetBodyScroll}>
           <div className={styles.header}>
-            <p className={styles.kicker}>{artistName}</p>
+            <p className={`${styles.kicker} ${scoreArtistName.goldNameKicker}`}>{artistName}</p>
             <h2 id="track-detail-title" className={styles.title}>
               {track.title}
             </h2>

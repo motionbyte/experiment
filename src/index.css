@@ -196,3 +196,81 @@ a {
     transform: scale(1);
   }
 }
+
+/* Metallic gold + Cinzel — use on an inner <span> (filter + clip on same node breaks WebKit) */
+.tls-gold-heading {
+  display: inline-block;
+  max-width: 100%;
+  font-family: "Cinzel", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-size: inherit;
+  line-height: inherit;
+  background-image: linear-gradient(
+    165deg,
+    #5c4208 0%,
+    #9a7309 12%,
+    #c9a227 26%,
+    #f5e6b8 40%,
+    #ffd700 48%,
+    #fffef5 52%,
+    #daa520 60%,
+    #b8860b 74%,
+    #6b4e0a 90%,
+    #2a1f06 100%
+  );
+  background-size: 150% 150%;
+  background-position: 38% 42%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: tls-gold-shine 5.5s ease-in-out infinite;
+}
+
+.tls-gold-year {
+  display: inline-block;
+  font-family: "Cinzel", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  font-size: inherit;
+  line-height: inherit;
+  background-image: linear-gradient(
+    165deg,
+    #5c4208 0%,
+    #9a7309 12%,
+    #c9a227 26%,
+    #f5e6b8 40%,
+    #ffd700 48%,
+    #fffef5 52%,
+    #daa520 60%,
+    #b8860b 74%,
+    #6b4e0a 90%,
+    #2a1f06 100%
+  );
+  background-size: 150% 150%;
+  background-position: 40% 44%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: tls-gold-shine 5.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tls-gold-heading,
+  .tls-gold-year {
+    animation: none;
+    background-position: center;
+  }
+}
+
+@keyframes tls-gold-shine {
+  0%,
+  100% {
+    background-position: 32% 38%;
+  }
+  50% {
+    background-position: 72% 55%;
+  }
+}

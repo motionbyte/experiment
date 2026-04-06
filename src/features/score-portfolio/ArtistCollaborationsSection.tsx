@@ -6,6 +6,7 @@ import type { ArtistTrack } from "./featuredArtistsData";
 import { FeaturedArtistPhoto } from "./FeaturedArtistPhoto";
 import { FEATURED_ARTISTS, getArtistById } from "./featuredArtistsData";
 import styles from "./ArtistCollaborationsSection.module.css";
+import scoreArtistName from "./scoreArtistName.module.css";
 
 /**
  * Artist-facing production work — Kumar Sanu opens track list → track detail modals.
@@ -71,7 +72,7 @@ export const ArtistCollaborationsSection: React.FC = () => {
                   aria-haspopup="dialog"
                 >
                   <FeaturedArtistPhoto name={a.name} imageUrl={a.imageUrl} />
-                  <span className={styles.artistName}>{a.name}</span>
+                  <span className={`${styles.artistName} ${scoreArtistName.goldName}`}>{a.name}</span>
                   <span className={styles.artistShine} aria-hidden="true" />
                 </button>
                 <Link to={`/artist/${a.id}`} className={styles.profilePageLink}>
@@ -84,7 +85,7 @@ export const ArtistCollaborationsSection: React.FC = () => {
             <li key={a.id} className={styles.artistCell} style={accentStyle}>
               <div className={styles.artistBox}>
                 <FeaturedArtistPhoto name={a.name} imageUrl={a.imageUrl} />
-                <span className={styles.artistName}>{a.name}</span>
+                <span className={`${styles.artistName} ${scoreArtistName.goldName}`}>{a.name}</span>
                 <span className={styles.artistShine} aria-hidden="true" />
               </div>
               <Link to={`/artist/${a.id}`} className={styles.profilePageLink}>
