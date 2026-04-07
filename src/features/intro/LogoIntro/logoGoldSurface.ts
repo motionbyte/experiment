@@ -1,5 +1,7 @@
 import * as THREE from "three";
 
+type BufferGeometryT = InstanceType<typeof THREE.BufferGeometry>;
+
 const TEX_SIZE = 512;
 
 function fract(n: number) {
@@ -55,11 +57,7 @@ function clamp255(n: number) {
  * Procedural brushed-gold microsurface: roughness breakup + fine normal detail
  * so the metal reads less “flat plastic” and more like cast / worked gold.
  */
-export function createBrushedGoldSurfaceTextures(): {
-  roughnessMap: THREE.DataTexture;
-  normalMap: THREE.DataTexture;
-  dispose: () => void;
-} {
+export function createBrushedGoldSurfaceTextures() {
   const w = TEX_SIZE;
   const h = TEX_SIZE;
   const height = new Float32Array(w * h);
@@ -134,7 +132,7 @@ export function createBrushedGoldSurfaceTextures(): {
 }
 
 /** OBJs often ship without UVs or with bad UVs — spherical projection makes maps wrap cleanly. */
-export function applySphericalUvIfMissing(geometry: THREE.BufferGeometry): void {
+export function applySphericalUvIfMissing(geometry: BufferGeometryT): void {
   if (geometry.getAttribute("uv")) return;
   const pos = geometry.getAttribute("position");
   if (!pos) return;

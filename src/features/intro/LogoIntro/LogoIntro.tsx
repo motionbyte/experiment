@@ -1,9 +1,7 @@
 import React from "react";
 import * as THREE from "three";
 import { runFrameLoop } from "../../../utils/visibilityFrame";
-// @ts-expect-error three/examples has no TS types in-core
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
-// @ts-expect-error three/examples has no TS types in-core
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import styles from "./LogoIntro.module.css";
 import {
@@ -206,7 +204,9 @@ export const LogoIntro: React.FC = () => {
               /* Per-mesh material so multi-group OBJs don’t share broken refs */
               const mat = baseMat.clone();
               mat.vertexColors = false;
-              const geo = (mesh as any).geometry as THREE.BufferGeometry | undefined;
+              const geo = (mesh as any).geometry as
+                | InstanceType<typeof THREE.BufferGeometry>
+                | undefined;
               if (geo && (geo as any).userData?.tangentsOk === false) {
                 mat.normalMap = null;
                 mat.normalScale?.set(1, 1);

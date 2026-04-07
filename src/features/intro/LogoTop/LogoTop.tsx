@@ -1,7 +1,6 @@
 import React from "react";
 import * as THREE from "three";
 import { runFrameLoop } from "../../../utils/visibilityFrame";
-// @ts-expect-error three/examples has no TS types in-core
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 import styles from "./LogoTop.module.css";
 
