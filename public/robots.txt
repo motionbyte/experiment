@@ -1,5 +1,5 @@
-# https://thelostsymbols.in — allow indexing; sitemap for Search Console / Bing.
+# https://www.thelostsymbols.in — allow indexing; sitemap for Search Console / Bing.
 User-agent: *
 Allow: /
 
-Sitemap: https://thelostsymbols.in/sitemap.xml
+Sitemap: https://www.thelostsymbols.in/sitemap.xml

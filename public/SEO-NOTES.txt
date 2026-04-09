@@ -2,7 +2,7 @@ Google indexing — quick checklist
 ==================================
 
 1) Domain in sitemap / robots
-   Canonical site: https://thelostsymbols.in — keep sitemap/robots in sync with
+   Canonical site: https://www.thelostsymbols.in — keep sitemap/robots in sync with
    Google Search Console (same protocol: https; use www only if that is your property).
 
 2) "Page with redirect" in Search Console
