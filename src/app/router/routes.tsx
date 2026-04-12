@@ -7,9 +7,15 @@ import { ScorePage } from "../../pages/ScorePage/ScorePage";
 import { ArtistSeoPage } from "../../pages/ArtistSeoPage/ArtistSeoPage";
 import { BandMemberSeoPage } from "../../pages/BandMemberSeoPage/BandMemberSeoPage";
 import { NotFoundPage } from "../../pages/NotFoundPage/NotFoundPage";
+import { TheLostVersePage } from "../../pages/TheLostVersePage/TheLostVersePage";
 import { RouteError } from "../errors/RouteError";
 
 export const routes: RouteObject[] = [
+  {
+    path: "/the-lost-verse",
+    element: <TheLostVersePage />,
+    errorElement: <RouteError />,
+  },
   {
     path: "/score",
     element: <ScorePage />,

@@ -1,0 +1,9 @@
+The Lost Verse — layer PNGs (same canvas size recommended, e.g. 1920×1080, transparent PNG)
+
+Current files wired in code (back → front):
+
+  TLV.png       — deepest (title / text)
+  frame 2.png   — middle (arch / frame layer)
+  FrameBG.png   — closest (outer frame / branches)
+
+Open: /the-lost-verse
