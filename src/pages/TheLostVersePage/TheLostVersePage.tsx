@@ -16,11 +16,17 @@ const VERSE_DESCRIPTION =
 export const TheLostVersePage: React.FC = () => {
   const taglineRef = useRef<HTMLParagraphElement>(null);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const charactersRef = useRef<HTMLParagraphElement>(null);
 
   const handleZoomProgress = useCallback(
-    ({ taglineOpacity, descriptionOpacity }: LostVerseZoomPayload) => {
+    ({
+      taglineOpacity,
+      descriptionOpacity,
+      charactersOpacity,
+    }: LostVerseZoomPayload) => {
       const title = taglineRef.current;
       const body = descriptionRef.current;
+      const characters = charactersRef.current;
       if (title) {
         title.style.opacity = String(taglineOpacity);
         title.style.visibility = taglineOpacity < 0.003 ? "hidden" : "visible";
@@ -29,6 +35,10 @@ export const TheLostVersePage: React.FC = () => {
         body.style.opacity = String(descriptionOpacity);
         body.style.visibility = descriptionOpacity < 0.004 ? "hidden" : "visible";
         body.style.display = descriptionOpacity < 0.004 ? "none" : "block";
+      }
+      if (characters) {
+        characters.style.opacity = String(charactersOpacity);
+        characters.style.visibility = charactersOpacity < 0.003 ? "hidden" : "visible";
       }
     },
     [],
@@ -45,6 +55,11 @@ export const TheLostVersePage: React.FC = () => {
       body.style.opacity = "0";
       body.style.visibility = "hidden";
       body.style.display = "none";
+    }
+    const characters = charactersRef.current;
+    if (characters) {
+      characters.style.opacity = "0";
+      characters.style.visibility = "hidden";
     }
   }, []);
 
@@ -95,6 +110,9 @@ export const TheLostVersePage: React.FC = () => {
           </p>
           <p ref={descriptionRef} className={styles.description}>
             {VERSE_DESCRIPTION}
+          </p>
+          <p ref={charactersRef} className={styles.charactersTitle}>
+            Characters
           </p>
         </div>
       </div>

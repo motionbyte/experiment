@@ -96,3 +96,29 @@
   color: rgba(238, 230, 210, 0.94);
   text-shadow: 0 2px 24px rgba(0, 0, 0, 0.8);
 }
+
+/** Chapter 2 — stars rush ke baad (canvas `charactersOpacity`). */
+.charactersTitle {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  max-width: calc(100vw - 2rem);
+  margin: 0;
+  padding: 0 0.35rem;
+  box-sizing: border-box;
+  text-align: center;
+  font-family: "Cinzel", "Times New Roman", serif;
+  font-size: clamp(1.5rem, 5vw, 3.25rem);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(245, 238, 220, 0.96);
+  text-shadow: 0 6px 72px rgba(0, 0, 0, 0.88);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  user-select: none;
+}
