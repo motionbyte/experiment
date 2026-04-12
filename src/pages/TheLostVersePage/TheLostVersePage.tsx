@@ -4,10 +4,13 @@ import { absolutePublicUrl } from "../../seo/seoDefaults";
 import { setSeoHead } from "../../seo/setSeoHead";
 import { SITE_ORIGIN } from "../../seo/siteOrigin";
 import { TheLostVerseCanvas, type LostVerseZoomPayload } from "./TheLostVerseCanvas";
+import { DitheredBandImage } from "./DitheredBandImage";
 import styles from "./TheLostVersePage.module.css";
 
 const VERSE_DESCRIPTION =
   "The Lost Verse is a cinematic universe created by The Lost Symbols, a world where stories are not just told but built, expanded, and lived across time, where multiple characters, timelines, and conflicts exist within a single interconnected reality, at its core stand five heroes and three villains each carrying their own purpose, past, and power while many more are yet to emerge, this universe is not limited to one medium as it unfolds through music, visual storytelling, series, and films, with our first series currently in development and its title set to be announced soon, The Lost Verse is only just beginning and this is merely the first chapter of something far bigger.";
+
+const BAND_IMG_SRC = `/the-lost-verse/${encodeURIComponent("the band.png")}`;
 
 /**
  * Standalone “The Lost Verse” — dolly zoom through layered art (no page scroll).
@@ -17,16 +20,21 @@ export const TheLostVersePage: React.FC = () => {
   const taglineRef = useRef<HTMLParagraphElement>(null);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const charactersRef = useRef<HTMLParagraphElement>(null);
+  const bandImageRef = useRef<HTMLDivElement>(null);
 
   const handleZoomProgress = useCallback(
     ({
       taglineOpacity,
       descriptionOpacity,
       charactersOpacity,
+      charactersScale,
+      charactersTopPct,
+      bandImageOpacity,
     }: LostVerseZoomPayload) => {
       const title = taglineRef.current;
       const body = descriptionRef.current;
       const characters = charactersRef.current;
+      const bandImg = bandImageRef.current;
       if (title) {
         title.style.opacity = String(taglineOpacity);
         title.style.visibility = taglineOpacity < 0.003 ? "hidden" : "visible";
@@ -34,11 +42,16 @@ export const TheLostVersePage: React.FC = () => {
       if (body) {
         body.style.opacity = String(descriptionOpacity);
         body.style.visibility = descriptionOpacity < 0.004 ? "hidden" : "visible";
-        body.style.display = descriptionOpacity < 0.004 ? "none" : "block";
       }
       if (characters) {
         characters.style.opacity = String(charactersOpacity);
         characters.style.visibility = charactersOpacity < 0.003 ? "hidden" : "visible";
+        characters.style.top = `${charactersTopPct}%`;
+        characters.style.transform = `translate(-50%, -50%) scale(${charactersScale})`;
+      }
+      if (bandImg) {
+        bandImg.style.opacity = String(bandImageOpacity);
+        bandImg.style.visibility = bandImageOpacity < 0.004 ? "hidden" : "visible";
       }
     },
     [],
@@ -54,12 +67,18 @@ export const TheLostVersePage: React.FC = () => {
     if (body) {
       body.style.opacity = "0";
       body.style.visibility = "hidden";
-      body.style.display = "none";
     }
     const characters = charactersRef.current;
+    const bandImg = bandImageRef.current;
     if (characters) {
       characters.style.opacity = "0";
       characters.style.visibility = "hidden";
+      characters.style.top = "50%";
+      characters.style.transform = "translate(-50%, -50%) scale(1)";
+    }
+    if (bandImg) {
+      bandImg.style.opacity = "0";
+      bandImg.style.visibility = "hidden";
     }
   }, []);
 
@@ -103,6 +122,9 @@ export const TheLostVersePage: React.FC = () => {
   return (
     <div className={styles.root}>
       <TheLostVerseCanvas className={styles.canvasWrap} onZoomProgress={handleZoomProgress} />
+      <div ref={bandImageRef} className={styles.bandImage}>
+        <DitheredBandImage src={BAND_IMG_SRC} />
+      </div>
       <div className={styles.copyOverlay}>
         <div className={styles.copyStage}>
           <p ref={taglineRef} className={styles.tagline}>

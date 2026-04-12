@@ -41,19 +41,23 @@ const MID_EXIT_P1 = 0.88;
  */
 const TAGLINE_P0 = 0.885;
 const TAGLINE_P1 = 0.912;
-/** Full opacity ke beech — scroll range jahan title stable dikhe. */
-const TAGLINE_OUT_P0 = 0.942;
-const TAGLINE_OUT_P1 = 0.975;
+/** Title out; `DESCRIPTION_P0` se pehle khatam — overlap na ho. */
+const TAGLINE_OUT_P0 = 0.935;
+const TAGLINE_OUT_P1 = 0.972;
 
-/** Body — `pHtml` par (smooth); camera se thoda late. */
-const DESCRIPTION_P0 = 0.978;
-const DESCRIPTION_P1 = 0.997;
 /**
- * Chapter 2 tabhi jab story clearly dikhe — purana gate (~0.997) bahut scroll maangta tha + wheel “dead” lagta tha.
+ * Body — lamba fade + smoother easing; `display` toggle hata ke layout jerk avoid (page).
+ * Max zoom par `p` ~0.988; wheel se `uiP` → 1.
  */
-const CHAPTER2_REQUIRES_UI_P = 0.989;
+const DESCRIPTION_P0 = 0.974;
+const DESCRIPTION_P1 = 0.996;
+/**
+ * Chapter 2 sirf jab `uiP` poora 1 — warna `postProgress` → `storyToBlack` story ko kaat deta
+ * (pehle 0.995 gate paragraph ke fade ke beech mein tha → blink).
+ */
+const CHAPTER2_REQUIRES_UI_P = 1;
 /** Max zoom par story phase complete karne ke liye wheel — `uiP` ko turant aage badhao (responsive). */
-const WHEEL_UI_P_NUDGE_MUL = 0.55;
+const WHEEL_UI_P_NUDGE_MUL = 0.65;
 
 const CAM_Z_MIN = 0.22;
 const CAM_Z_MAX = 12.5;
@@ -83,32 +87,110 @@ const UI_P_LERP_MID = 0.062;
  * Max zoom ke baad scroll — chapter 2: story gayab → blank → stars up → "Characters".
  * Wheel `delta` camera jaisa hi scale (~0.02–0.2 / event) — multiplier zyada rakho warna progress dikhe hi nahi.
  */
-const POST_SCROLL_WHEEL_MUL = 0.5;
-const POST_SCROLL_TOUCH_MUL = 5.2;
+/**
+ * Story ke baad star zoom — kam multiplier = zyada smooth / zyada scroll.
+ * Neeche (rise + look) — zyada multiplier = tez.
+ */
+const POST_SCROLL_WHEEL_MUL_ZOOM = 0.26;
+const POST_SCROLL_WHEEL_MUL_DOWN = 0.62;
+const POST_SCROLL_TOUCH_MUL_ZOOM = 2.35;
+const POST_SCROLL_TOUCH_MUL_DOWN = 5.8;
 /** Wheel → `targetPostProgress`; yeh display ko chase karta — jerk kam, speed same. */
-const POST_PROGRESS_LERP = 0.26;
-const STORY_FADE_P1 = 0.2;
+const POST_PROGRESS_LERP = 0.32;
+/** Story HTML — pehle `P0` tak full; phir `P1` tak fade (pehle 0→0.2 tha = bahut jaldi gayab). */
+const STORY_FADE_P0 = 0.34;
+const STORY_FADE_P1 = 0.62;
 const ART_HIDE_P0 = 0.1;
 const ART_HIDE_P1 = 0.38;
-const STAR_RISE_P0 = 0.26;
-const STAR_RISE_P1 = 0.76;
+/**
+ * Chapter 2: pehle story HTML poora fade (`STORY_FADE_*`), phir hi stars zoom (`POST_ZOOM_BEAT_*`).
+ * `POST_ZOOM_BEAT_P0 === STORY_FADE_P1` taaki overlap na ho.
+ */
+const POST_ZOOM_BEAT_P0 = STORY_FADE_P1;
+/** Zoom — lamba `p` span + alag wheel speed = smooth “into stars”. */
+const POST_ZOOM_BEAT_P1 = 0.835;
+
+function postScrollWheelMulFor(post: number): number {
+  return post >= POST_ZOOM_BEAT_P0 && post < POST_ZOOM_BEAT_P1
+    ? POST_SCROLL_WHEEL_MUL_ZOOM
+    : POST_SCROLL_WHEEL_MUL_DOWN;
+}
+
+function postScrollTouchMulFor(post: number): number {
+  return post >= POST_ZOOM_BEAT_P0 && post < POST_ZOOM_BEAT_P1
+    ? POST_SCROLL_TOUCH_MUL_ZOOM
+    : POST_SCROLL_TOUCH_MUL_DOWN;
+}
+/** Neeche drift — chhota span + tez wheel = fast downward feel. */
+const STAR_RISE_P0 = 0.835;
+const STAR_RISE_P1 = 0.945;
 /** Pehli layer — tez upward (original feel). */
 const STAR_RISE_MAX_Y = 48;
 /** Dusri layer — chhoti shift taaki center bhar jaaye, mix lage. */
-const STAR_MIX_RISE_MUL = 0.38;
-const CAM_LOOK_DOWN_P0 = 0.16;
-const CAM_LOOK_DOWN_P1 = 0.44;
-const CAM_LOOK_DOWN_MAX = 3.2;
-const CHARACTERS_P0 = 0.48;
-const CHARACTERS_P1 = 0.92;
-const RESET_POST_BELOW_P = 0.62;
+const STAR_MIX_RISE_MUL = 0.48;
+/** Zoom beat: stars camera ki taraf (world +Z) — “aage” aane ka feel. */
+const STAR_DOLLY_Z_MAX = 34;
+/** Camera neeche — rise ke saath, tez (chhota band). */
+const CAM_LOOK_DOWN_P0 = 0.835;
+const CAM_LOOK_DOWN_P1 = 0.905;
+const CAM_LOOK_DOWN_MAX = 3.55;
+/**
+ * Characters — fade-in + scale 1→2 (`SCALE_*`), hold, phir scale 2→chhota + `top` 50%→upper (`EXIT_*`);
+ * opacity exit mein nahi girta.
+ */
+const CHARACTERS_SCALE_P0 = 0.94;
+const CHARACTERS_SCALE_P1 = 0.956;
+const CHARACTERS_EXIT_P0 = 0.964;
+const CHARACTERS_EXIT_P1 = 0.999;
+/** Exit ke end — kitna chhota (center-anchored scale). */
+const CHARACTERS_END_SCALE = 0.52;
+/** Exit — `top` % (viewport); 50 = center, ~12 = upper center. */
+const CHARACTERS_END_TOP_PCT = 12;
+/** Three.js stars — exit ke saath Y (text ke saath parallax). */
+const CHARACTERS_STAR_LIFT_Y = 28;
+/** Scale phase mein stars “aate hue” — `uStarZoom` boost; exit mein `exitT` se dheere off. */
+const CHARACTERS_STAR_RUSH_ZOOM = 0.52;
+const RESET_POST_BELOW_P = 0.5;
 
 /** Fixed background — uneven sizes, twinkle; artwork parallax se alag. */
 const STAR_COUNT_MAIN = 4200;
 /** Doosri layer — wide spread, thodi chhoti points; Characters ke peeche fill + mix. */
 const STAR_COUNT_MIX = 3400;
+/** Teesra layer — aur peeche Z + alag rise timing = neeche aate waqt lamba parallax. */
+const STAR_COUNT_DEEP = 3200;
 const STAR_Z_MIN = -28;
 const STAR_Z_MAX = -92;
+/** Deep sheet — camera se zyada door, chhote points. */
+const STAR_DEEP_Z_MIN = -108;
+const STAR_DEEP_Z_MAX = -56;
+/** Main rise ke saath phase sync — neeche drift ek saath lage. */
+const STAR_RISE_DEEP_P0 = STAR_RISE_P0;
+const STAR_RISE_DEEP_P1 = STAR_RISE_P1;
+const STAR_DEEP_RISE_MUL = 0.52;
+const STAR_DEEP_DOLLY_MUL = 0.72;
+const STAR_DEEP_MIX_RISE_MUL = 0.34;
+
+function characterPhase(post: number) {
+  const sm = THREE.MathUtils.smoothstep;
+  const lerp = THREE.MathUtils.lerp;
+  const enterT =
+    post < CHARACTERS_SCALE_P0 ? 0 : sm(post, CHARACTERS_SCALE_P0, CHARACTERS_SCALE_P1);
+  const exitT = post < CHARACTERS_EXIT_P0 ? 0 : sm(post, CHARACTERS_EXIT_P0, CHARACTERS_EXIT_P1);
+  let opacity = 0;
+  if (post < CHARACTERS_SCALE_P0) opacity = 0;
+  else if (post < CHARACTERS_EXIT_P0) opacity = enterT;
+  else opacity = 1;
+  const scale =
+    post < CHARACTERS_EXIT_P0
+      ? lerp(1, 2, enterT)
+      : lerp(2, CHARACTERS_END_SCALE, exitT);
+  const topPct =
+    post < CHARACTERS_EXIT_P0 ? 50 : lerp(50, CHARACTERS_END_TOP_PCT, exitT);
+  /** Band art — title upar dock hone ke baad (`exitT` ke anth). */
+  const bandImageOpacity =
+    post < CHARACTERS_EXIT_P0 ? 0 : sm(exitT, 0.92, 1);
+  return { opacity, scale, topPct, enterT, exitT, bandImageOpacity };
+}
 
 function buildStarShaderMaterial() {
   return new THREE.ShaderMaterial({
@@ -242,6 +324,47 @@ function createStarfieldMix() {
   return { points, material };
 }
 
+/** Sabse peeche — extra depth; scroll par alag phase se move = lamba “beech stars” feel. */
+function createStarfieldDeep() {
+  const positions = new Float32Array(STAR_COUNT_DEEP * 3);
+  const sizes = new Float32Array(STAR_COUNT_DEEP);
+  const phases = new Float32Array(STAR_COUNT_DEEP);
+  const colorVar = new Float32Array(STAR_COUNT_DEEP * 3);
+
+  for (let i = 0; i < STAR_COUNT_DEEP; i++) {
+    const u = Math.random();
+    const v = Math.random();
+    const spread = 0.55 + Math.random() * 1.05;
+    const x = (u - 0.5) * 78 * spread + (Math.random() - 0.5) * 28;
+    const yWide = (v - 0.5) * 140 * (0.45 + Math.random() * 0.9);
+    const yJitter = (Math.random() - 0.5) * 60;
+    const y = yWide * 0.62 + yJitter;
+    const z = STAR_DEEP_Z_MIN + Math.random() * (STAR_DEEP_Z_MAX - STAR_DEEP_Z_MIN);
+    positions[i * 3] = x;
+    positions[i * 3 + 1] = y;
+    positions[i * 3 + 2] = z;
+    const r = Math.random();
+    sizes[i] = 0.18 + r * r * 2.8 + (Math.random() > 0.94 ? 1.4 : 0);
+    phases[i] = Math.random() * Math.PI * 2;
+    const w = 0.72 + Math.random() * 0.22;
+    colorVar[i * 3] = 0.82 * w;
+    colorVar[i * 3 + 1] = 0.8 * w;
+    colorVar[i * 3 + 2] = 0.68 + Math.random() * 0.14;
+  }
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  geo.setAttribute("aSize", new THREE.BufferAttribute(sizes, 1));
+  geo.setAttribute("aPhase", new THREE.BufferAttribute(phases, 1));
+  geo.setAttribute("aColor", new THREE.BufferAttribute(colorVar, 3));
+
+  const material = buildStarShaderMaterial();
+  const points = new THREE.Points(geo, material);
+  points.frustumCulled = false;
+  points.renderOrder = -82;
+  return { points, material };
+}
+
 function wheelDelta(e: WheelEvent): number {
   if (e.deltaMode === WheelEvent.DOM_DELTA_PIXEL) return e.deltaY * 0.003;
   if (e.deltaMode === WheelEvent.DOM_DELTA_LINE) return e.deltaY * 0.085;
@@ -256,6 +379,12 @@ export type LostVerseZoomPayload = {
   descriptionOpacity: number;
   /** Max zoom ke baad chapter — "Characters" title. */
   charactersOpacity: number;
+  /** 1 → 2 scale enter phase; exit pe 2 rehta hai. */
+  charactersScale: number;
+  /** `position: fixed` — `top` % (50 = center, end ~12 = upper center). */
+  charactersTopPct: number;
+  /** `the band.png` — Characters title upar pahunchne ke baad. */
+  bandImageOpacity: number;
   /** 0–1 second leg (story → stars rush → characters). */
   postProgress: number;
 };
@@ -278,6 +407,8 @@ export function TheLostVerseCanvas({ className, onZoomProgress }: Props) {
 
     const { points: starPoints, material: starMaterial } = createStarfieldMain();
     const { points: starMixPoints, material: starMixMaterial } = createStarfieldMix();
+    const { points: starDeepPoints, material: starDeepMaterial } = createStarfieldDeep();
+    scene.add(starDeepPoints);
     scene.add(starMixPoints);
     scene.add(starPoints);
 
@@ -340,9 +471,7 @@ export function TheLostVerseCanvas({ className, onZoomProgress }: Props) {
     let py = 0;
     let targetPx = 0;
     let targetPy = 0;
-    /** Title phase mein body scroll lock — story text aane ke baad hi native scroll. */
-    let allowNativePageScroll = false;
-    /** Camera `p` ka smoothed echo — sirf HTML opacities + `allowNativePageScroll`. */
+    /** Camera `p` ka smoothed echo — sirf HTML opacities. */
     let uiP = 0;
     /** Max zoom ke baad wheel — story → stars → Characters (smoothed). */
     let postProgress = 0;
@@ -379,7 +508,7 @@ export function TheLostVerseCanvas({ className, onZoomProgress }: Props) {
       const pHtml = uiP;
       const sm = THREE.MathUtils.smoothstep;
 
-      const storyToBlack = sm(postProgress, 0, STORY_FADE_P1);
+      const storyToBlack = sm(postProgress, STORY_FADE_P0, STORY_FADE_P1);
       const artHide = sm(postProgress, ART_HIDE_P0, ART_HIDE_P1);
 
       /** frame 2 base — TLV ratio isi band mein settle (frame 2 jaisa timing). */
@@ -410,16 +539,14 @@ export function TheLostVerseCanvas({ className, onZoomProgress }: Props) {
 
       let taglineOpacity =
         sm(pHtml, TAGLINE_P0, TAGLINE_P1) * (1 - sm(pHtml, TAGLINE_OUT_P0, TAGLINE_OUT_P1));
-      let descriptionOpacity = sm(pHtml, DESCRIPTION_P0, DESCRIPTION_P1);
+      const tDesc = sm(pHtml, DESCRIPTION_P0, DESCRIPTION_P1);
+      /** Smootherstep on 0–1 — soft start/stop (kam “pop”). */
+      const tDescSmooth = tDesc * tDesc * tDesc * (tDesc * (tDesc * 6 - 15) + 10);
+      let descriptionOpacity = tDescSmooth;
       taglineOpacity *= 1 - storyToBlack;
       descriptionOpacity *= 1 - storyToBlack;
 
-      const charactersOpacity = sm(postProgress, CHARACTERS_P0, CHARACTERS_P1);
-
-      allowNativePageScroll =
-        postProgress < 0.04 &&
-        taglineOpacity < 0.06 &&
-        descriptionOpacity > 0.04;
+      const cp = characterPhase(postProgress);
 
       materials.forEach((m, i) => {
         planes[i]!.visible = m.opacity > 0.004;
@@ -448,7 +575,10 @@ export function TheLostVerseCanvas({ className, onZoomProgress }: Props) {
         p,
         taglineOpacity,
         descriptionOpacity,
-        charactersOpacity,
+        charactersOpacity: cp.opacity,
+        charactersScale: cp.scale,
+        charactersTopPct: cp.topPct,
+        bandImageOpacity: cp.bandImageOpacity,
         postProgress,
       });
     }
@@ -473,10 +603,10 @@ export function TheLostVerseCanvas({ className, onZoomProgress }: Props) {
 
     window.addEventListener("pointermove", onPointerMove);
 
-    /** Lerp lag ya float — dono se check; warna chapter 2 kabhi gate nahi hota. */
+    /** Thoda loose — warna camZ lerp se “max” miss ho jata hai aur chapter 2 wheel dead. */
     const isAtMaxZoom = () => {
       const z = Math.min(camZ, targetCamZ);
-      return z <= CAM_Z_MIN + 0.055;
+      return z <= CAM_Z_MIN + 0.14;
     };
 
     const onWheel = (e: WheelEvent) => {
@@ -485,24 +615,23 @@ export function TheLostVerseCanvas({ className, onZoomProgress }: Props) {
       const zoomOut = delta < 0;
       const atMax = isAtMaxZoom();
       /**
-       * Max zoom ke baad chapter 2 — yahan native scroll chhodna mat: page par aksar overflow nahi,
-       * wheel kha jaata hai aur `postProgress` kabhi badhta nahi.
+       * Pehle yahan native page-scroll chhodte the — story screen par body overflow kabhi kabhi 0,
+       * wheel skip ho jata tha aur zoom aage nahi badhta (dead / stuck).
        */
-      if (allowNativePageScroll && !zoomOut && !atMax) {
-        return;
-      }
       e.preventDefault();
       if (atMax && delta > 0) {
         if (uiP < CHAPTER2_REQUIRES_UI_P) {
           uiP = Math.min(1, uiP + Math.abs(delta) * WHEEL_UI_P_NUDGE_MUL);
         }
         if (uiP >= CHAPTER2_REQUIRES_UI_P) {
-          targetPostProgress = Math.min(1, targetPostProgress + Math.abs(delta) * POST_SCROLL_WHEEL_MUL);
+          const mul = postScrollWheelMulFor(postProgress);
+          targetPostProgress = Math.min(1, targetPostProgress + Math.abs(delta) * mul);
         }
         return;
       }
       if (atMax && zoomOut && targetPostProgress > 0) {
-        targetPostProgress = Math.max(0, targetPostProgress - Math.abs(delta) * POST_SCROLL_WHEEL_MUL * 1.15);
+        const mul = postScrollWheelMulFor(postProgress);
+        targetPostProgress = Math.max(0, targetPostProgress - Math.abs(delta) * mul * 1.15);
         return;
       }
       targetCamZ -= delta;
@@ -522,21 +651,20 @@ export function TheLostVerseCanvas({ className, onZoomProgress }: Props) {
       /** `dTouch > 0` finger neeche = zoom bahar (same as wheel). */
       const zoomOut = dTouch > 0;
       const atMax = isAtMaxZoom();
-      if (allowNativePageScroll && !zoomOut && !atMax) {
-        return;
-      }
       e.preventDefault();
       if (atMax && dTouch < 0) {
         if (uiP < CHAPTER2_REQUIRES_UI_P) {
           uiP = Math.min(1, uiP + Math.abs(dTouch) * WHEEL_UI_P_NUDGE_MUL * 9);
         }
         if (uiP >= CHAPTER2_REQUIRES_UI_P) {
-          targetPostProgress = Math.min(1, targetPostProgress + Math.abs(dTouch) * POST_SCROLL_TOUCH_MUL);
+          const mul = postScrollTouchMulFor(postProgress);
+          targetPostProgress = Math.min(1, targetPostProgress + Math.abs(dTouch) * mul);
         }
         return;
       }
       if (atMax && zoomOut && targetPostProgress > 0) {
-        targetPostProgress = Math.max(0, targetPostProgress - Math.abs(dTouch) * POST_SCROLL_TOUCH_MUL * 1.1);
+        const mul = postScrollTouchMulFor(postProgress);
+        targetPostProgress = Math.max(0, targetPostProgress - Math.abs(dTouch) * mul * 1.1);
         return;
       }
       targetCamZ += dTouch;
@@ -564,6 +692,9 @@ export function TheLostVerseCanvas({ className, onZoomProgress }: Props) {
       starMixPoints.position.set(0, 0, 0);
       starMixPoints.scale.setScalar(1);
       starMixMaterial.uniforms.uStarZoom.value = 1;
+      starDeepPoints.position.set(0, 0, 0);
+      starDeepPoints.scale.setScalar(1);
+      starDeepMaterial.uniforms.uStarZoom.value = 1;
       camera.position.y = 0;
     };
 
@@ -585,18 +716,33 @@ export function TheLostVerseCanvas({ className, onZoomProgress }: Props) {
       }
 
       const smPost = THREE.MathUtils.smoothstep;
-      const rawRise = smPost(postProgress, STAR_RISE_P0, STAR_RISE_P1) * STAR_RISE_MAX_Y;
-      starPoints.position.y = rawRise;
-      starMixPoints.position.y = rawRise * STAR_MIX_RISE_MUL;
+      /** Linear `t` phir `t²` ease-in — zoom phase zyada smooth / kam jhatka. */
+      const tZoomLin = smPost(postProgress, POST_ZOOM_BEAT_P0, POST_ZOOM_BEAT_P1);
+      const zoomBeat = tZoomLin * tZoomLin;
+      const riseT = smPost(postProgress, STAR_RISE_P0, STAR_RISE_P1);
+      const riseTDeep = smPost(postProgress, STAR_RISE_DEEP_P0, STAR_RISE_DEEP_P1);
+      const rawRise = riseT * STAR_RISE_MAX_Y;
+      const rawRiseDeep = riseTDeep * STAR_RISE_MAX_Y * STAR_DEEP_RISE_MUL;
+      const dollyZ = zoomBeat * STAR_DOLLY_Z_MAX;
+      const dollyZDeep = dollyZ * STAR_DEEP_DOLLY_MUL;
+      const cp = characterPhase(postProgress);
+      const charLiftY = cp.exitT * CHARACTERS_STAR_LIFT_Y;
+      const rushMul = 1 + cp.enterT * CHARACTERS_STAR_RUSH_ZOOM * (1 - cp.exitT);
+      starPoints.position.set(0, rawRise + charLiftY, dollyZ);
+      starMixPoints.position.set(0, rawRise * STAR_MIX_RISE_MUL + charLiftY * 0.96, dollyZ * 0.9);
+      starDeepPoints.position.set(0, rawRiseDeep * STAR_DEEP_MIX_RISE_MUL + charLiftY * 0.9, dollyZDeep);
       const lookDown = smPost(postProgress, CAM_LOOK_DOWN_P0, CAM_LOOK_DOWN_P1) * CAM_LOOK_DOWN_MAX;
       camera.position.y = -lookDown;
-      /** Scroll ke saath lagatar zoom — main tez, mix thoda kam (depth mix). */
-      const scrollZoom = 1 + postProgress * 1.05;
-      const scrollZoomMix = 1 + postProgress * 0.82;
+      /** Pehle zoom beat (shader + scale), phir rise ke saath thoda aur. */
+      const scrollZoom = (1 + zoomBeat * 1.12 + riseT * 0.42) * rushMul;
+      const scrollZoomMix = (1 + zoomBeat * 0.92 + riseT * 0.34) * rushMul;
+      const scrollZoomDeep = (1 + zoomBeat * 0.88 + riseTDeep * 0.36) * rushMul;
       starMaterial.uniforms.uStarZoom.value = scrollZoom;
       starMixMaterial.uniforms.uStarZoom.value = scrollZoomMix;
-      starPoints.scale.setScalar(1 + postProgress * 0.12);
-      starMixPoints.scale.setScalar(1 + postProgress * 0.08);
+      starDeepMaterial.uniforms.uStarZoom.value = scrollZoomDeep;
+      starPoints.scale.setScalar(1 + zoomBeat * 0.14 + riseT * 0.1);
+      starMixPoints.scale.setScalar(1 + zoomBeat * 0.09 + riseT * 0.07);
+      starDeepPoints.scale.setScalar(1 + zoomBeat * 0.07 + riseTDeep * 0.085);
 
       px += (targetPx - px) * PARALLAX_LERP;
       py += (targetPy - py) * PARALLAX_LERP;
@@ -607,6 +753,7 @@ export function TheLostVerseCanvas({ className, onZoomProgress }: Props) {
       const t = performance.now() * 0.001;
       starMaterial.uniforms.uTime.value = t;
       starMixMaterial.uniforms.uTime.value = t * 0.92;
+      starDeepMaterial.uniforms.uTime.value = t * 0.88;
       renderer.render(scene, camera);
     };
     rafId = requestAnimationFrame(loop);
@@ -625,6 +772,9 @@ export function TheLostVerseCanvas({ className, onZoomProgress }: Props) {
       scene.remove(starMixPoints);
       starMixPoints.geometry.dispose();
       starMixMaterial.dispose();
+      scene.remove(starDeepPoints);
+      starDeepPoints.geometry.dispose();
+      starDeepMaterial.dispose();
       scene.remove(layerGroup);
       sharedGeometry.dispose();
       materials.forEach((m) => {
